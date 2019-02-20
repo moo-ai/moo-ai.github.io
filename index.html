@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+    <title>File API Demo</title>
+	 </script>
+	 
+	 <script type="text/javascript">
+	 <!--
+		function uploadAndSubmit() {
+			form = document.forms["demoForm"];
+			
+			if (form["file"].files.length > 0)
+			{
+				file = form["file"].files[0];
+				
+				// try sending
+				reader = new FileReader();
+				
+				reader.onloadstart = function() {
+					console.log("onloadstart");
+					
+	            document.getElementById("bytesTotal").textContent = file.size;
+				}
+				
+				reader.onprogress = function(p) {
+					console.log("onprogress");
+					document.getElementById("bytesRead").textContent = p.loaded;
+				}
+				
+				reader.onload = function() {
+					console.log("load complete");
+				}
+				
+				reader.onloadend = function() {
+					if (reader.error) {
+						console.log(reader.error);
+					} else {
+						document.getElementById("bytesRead").textContent = file.size;
+						var xhr = new XMLHttpRequest();
+						xhr.open(/* method */ "POST", /* target url */ "upload.jsp?fileName=" + file.name /*, async, default to true */);
+						xhr.overrideMimeType("application/octet-stream");
+						XMLHttpRequest.prototype.sendAsBinary = function(text){
+						var data = new ArrayBuffer(text.length);
+						var ui8a = new Uint8Array(data, 0);
+						for (var i = 0; i < text.length; i++) ui8a[i] = (text.charCodeAt(i) & 0xff);
+
+						//var bb = new BlobBuilder(); // doesn't exist in Firefox 4
+						//bb.append(data);
+						//var blob = bb.getBlob();
+						//this.send(blob);
+						}
+						xhr.sendAsBinary(reader.result);
+						xhr.onreadystatechange = function() {
+							if (xhr.readyState == 4) {
+								if (xhr.status == 200) {
+									console.log("upload complete");
+									console.log("response: " + xhr.responseText);
+								}
+							}
+						}
+					}
+					
+				}
+				if (!FileReader.prototype.readAsBinaryString) {
+					FileReader.prototype.readAsBinaryString = function (fileData) {
+					   var binary = "";
+					   var pt = this;
+					   var reader1 = new FileReader();      
+					   reader1.onload = function (e) {
+						   var bytes = new Uint8Array(reader1.result);
+						   var length = bytes.byteLength;
+						   for (var i = 0; i < length; i++) {
+							   binary += String.fromCharCode(bytes[i]);
+						   }
+					   //pt.result  - readonly so assign binary
+					   pt.content = binary;
+					   $(pt).trigger('onloadend');
+					   }
+				       return reader1.readAsArrayBuffer(fileData);
+				    }
+				}
+				
+				console.log(reader.readAsBinaryString(file));
+			}
+			else
+			{
+				alert ("Please choose a file.");
+			}
+		}
+		
+	  // -->
+	 </script>
+</head>
+
+<body>
+<h1>File API Demo</h1>
+<p>
+	<form name="demoForm" id="demoForm" method="post" enctype="multipart/form-data" action="javascript: uploadAndSubmit();">
+		<p>Upload File: <input type="file" name="file" id="file" required /></p>
+		<p>
+			<script src="./octokat.js"></script>
+			<script type="text/javascript"> 
+			function onClick(){ 
+			    var octo = new Octokat({
+			      username: 'moo-ai',
+			      password: 'mooopeblab1',
+			    })
+
+			    var cb = function (err, val) { console.log(val) }
+			    //octo.zen.read(cb)
+			    //octo.repos('wangxiyuan', 'ai-openlab-test').issues(10).comments.create({body: "Hello World"})
+				const repo = octo.repos('wangxiyuan', 'ai-openlab-test')
+				
+				// create new branch
+				var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
+				repo.commits.fetch()
+                .then(function ({items}) {
+				  lastcommit = items[items.length - 1]
+				  repo.git.refs.create({ref: 'refs/heads/' + new_branch_name, sha: lastcommit.sha})
+				})
+				
+				// create a attach file
+				var file_binary = ''
+				input_file = document.getElementById("file")
+
+				file_name = input_file.files[0].name
+				//var rfile = new File([input_file.baseURI], file_name, {type: 'application/zip'})
+				var rfile = new File([input_file.baseURI], file_name)
+				var file_reader = new FileReader()
+				file_reader.onload = function(evt) {
+					input_file.src = evt.target.result
+					file_binary = evt.target.result
+				}
+				
+				const sleep = (milliseconds) => {
+					return new Promise(resolve => setTimeout(resolve, milliseconds))
+				}
+				//file_reader.readAsDataURL(rfile)
+				file_reader.readAsText(input_file.files[0], 'UTF-8')
+				finfo = uploadAndSubmit()
+				var bbb = ''
+				sleep(10000).then(() => {
+					repo.fetch()
+					.then(function ({aaa}) {
+					  return repo.branches("master").fetch().then(({commit}) => {
+						let config = {
+						  message: 'test-for-ai-commit-for-create-new-file',
+						  content: btoa(file_reader.result),
+						  branch: new_branch_name,
+						  path: "user_data/" + file_name
+						}
+						// check new_branch_name exist in remote
+						repo.contents("user_data/" + file_name).add(config)
+					  })
+					})
+					.then(sleep(10000))
+					.then(function () {
+					  let pr_conf = {
+					    	title: new_branch_name + " AI CI Job",
+					    	body: "So hard to implement by JS.",
+					    	base: "master",
+					    	head: "wangxiyuan:" + new_branch_name
+					  }
+					  repo.pulls.create(pr_conf)
+					})
+				})
+			
+			}
+			</script> 
+			<button onclick="onClick()">Submit!</button></p>
+	</form>
+	<div>Progessing (in Bytes): <span id="bytesRead"></span> / <span id="bytesTotal"></span></div>
+</p>
+
+</body>
+</html>
+
+
+
