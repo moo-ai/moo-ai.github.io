@@ -1,11 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>MOO</title>
-	 </script>
-	 
-	 <script type="text/javascript">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>MOO</title>
+	<script type="text/javascript">
 	 <!--
 		function uploadAndSubmit() {
 			form = document.forms["demoForm"];
@@ -87,159 +84,157 @@
 		
 	  // -->
 	 </script>
-
 </head>
 
 <body>
-
-<script src="./octokat.js"></script>
-<script type="text/javascript">
-	var octo = new Octokat({
-				  username: 'bzhaoopenstack',
-				  password: 'jingyibb1314~',
-				})
-</script>
-
-<h1><center>Machine Learning On OpenLab</center></h1>
-
-<h2>Chose a way to refer your ML data</h2>
-
-<form id="demoForm" name="demoForm" method="post" enctype="multipart/form-data" action="javascript: uploadAndSubmit();">
-  <p>
-    <label>
-      <input type="radio" onClick="chose_url_way()" name="RadioGroup1" value="单选" id="url_way" />URL
-		<script type="text/javascript">
-		    function chose_url_way(){
-		        document.getElementById('url_text').removeAttribute('readonly')
-		        document.getElementById('submit_button').removeAttribute('disabled')
-		        document.getElementById('file').setAttribute('disabled', 'disabled')
-		    }
-        </script>
-	</label>
-    <br />
-    <br />
-    <input name="" type="text" readonly="readonly" id="url_text"/>
-    <br />
-    <br />
-    <br />
-    <label>
-      <input type="radio" name="RadioGroup1" value="单选" id="file_way" onClick="chose_file_way()"/>Local File
-		<script type="text/javascript">
-		    function chose_file_way(){
-		        document.getElementById('file').removeAttribute('disabled')
-		        document.getElementById('submit_button').removeAttribute('disabled')
-		        document.getElementById('url_text').setAttribute('readonly', 'readonly')
-		        document.getElementById('url_text').value=''
-		    }
-        </script>
-	</label>
-    <br />
-    <br />
-	<input type="file" name="file" id="file" disabled="disabled"/>
-    <br />
-    <br />
-    <br />
-    <h2>Submit your data, We'll restore the ML enviroment for you</h2>
+	<script src="./octokat.js"></script>
 	<script type="text/javascript">
-		function onClick(){
-			var cb = function (err, val) { console.log(val) }
-			const repo = octo.repos('moo-ai', 'moo-ai.github.io')
+		var octo = new Octokat({
+					  username: 'bzhaoopenstack',
+					  password: 'jingyibb1314~',
+					})
+	</script>
 
-			// create new branch
-			var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
-			repo.commits.fetch()
-							.then(function ({items}) {
-			  lastcommit = items[items.length - 1]
-			  repo.git.refs.create({ref: 'refs/heads/' + new_branch_name, sha: lastcommit.sha})
-			})
+	<h1><center>Machine Learning On OpenLab</center></h1>
 
-			// create a attach file
-			var file_binary = ''
-			input_file = document.getElementById("file")
+	<h2>1. First, chose a way to refer your ML data</h2>
 
-			file_name = input_file.files[0].name
-			//var rfile = new File([input_file.baseURI], file_name, {type: 'application/zip'})
-			var rfile = new File([input_file.baseURI], file_name)
-			var file_reader = new FileReader()
-			file_reader.onload = function(evt) {
-				input_file.src = evt.target.result
-				file_binary = evt.target.result
-			}
+	<form id="demoForm" name="demoForm" method="post" enctype="multipart/form-data" action="javascript: uploadAndSubmit();">
+	  <p>
+		<label>
+		  <input type="radio" onClick="chose_url_way()" name="RadioGroup1" value="单选" id="url_way" />URL
+			<script type="text/javascript">
+				function chose_url_way(){
+					document.getElementById('url_text').removeAttribute('readonly')
+					document.getElementById('submit_button').removeAttribute('disabled')
+					document.getElementById('file').setAttribute('disabled', 'disabled')
+				}
+			</script>
+		</label>
+		<br />
+		<br />
+		<input name="" type="text" readonly="readonly" id="url_text"/>
+		<br />
+		<br />
+		<br />
+		<label>
+		  <input type="radio" name="RadioGroup1" value="单选" id="file_way" onClick="chose_file_way()"/>Local File
+			<script type="text/javascript">
+				function chose_file_way(){
+					document.getElementById('file').removeAttribute('disabled')
+					document.getElementById('submit_button').removeAttribute('disabled')
+					document.getElementById('url_text').setAttribute('readonly', 'readonly')
+					document.getElementById('url_text').value=''
+				}
+			</script>
+		</label>
+		<br />
+		<br />
+		<input type="file" name="file" id="file" disabled="disabled"/>
+		<br />
+		<br />
+		<br />
+		<h2>2. Then, bubmit your data, we'll reproduce the ML environment for you</h2>
+		<script type="text/javascript">
+			function onClick(){
+				var cb = function (err, val) { console.log(val) }
+				const repo = octo.repos('moo-ai', 'moo-ai.github.io')
 
-			const sleep = (milliseconds) => {
-				return new Promise(resolve => setTimeout(resolve, milliseconds))
-			}
-			var pr_commit_id = ""
-			//file_reader.readAsDataURL(rfile)
-			file_reader.readAsText(input_file.files[0], 'UTF-8')
-			//finfo = uploadAndSubmit()
-			sleep(3000).then(() => {
-				repo.fetch()
-				.then(function ({aaa}) {
-				  return repo.branches("master").fetch().then(({commit}) => {
-					let config = {
-					  message: 'test-for-ai-commit-for-create-new-file',
-					  content: btoa(file_reader.result),
-					  branch: new_branch_name,
-					  path: "user_data/" + file_name
-					}
-					// check new_branch_name exist in remote
-					repo.contents("user_data/" + file_name).add(config)
-				  })
+				// create new branch
+				var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
+				repo.commits.fetch()
+								.then(function ({items}) {
+				  lastcommit = items[items.length - 1]
+				  repo.git.refs.create({ref: 'refs/heads/' + new_branch_name, sha: lastcommit.sha})
 				})
-				sleep(4000)
-				.then(function () {
-				  let pr_conf = {
-						title: new_branch_name + " AI CI Job",
-						body: "So hard to implement by JS.",
-						base: "master",
-						head: "moo-ai:" + new_branch_name
-				  }
-				  sleep(5000).then(function () {
-					  repo.pulls.create(pr_conf)
-					  .then(function (resp) {
-						var pr_num = resp.number
-						repo.pulls(pr_num).fetch()
-						.then(function (body) {
-							pr_commit_id = body.head.sha
-						})
+
+				// create a attach file
+				var file_binary = ''
+				input_file = document.getElementById("file")
+
+				file_name = input_file.files[0].name
+				//var rfile = new File([input_file.baseURI], file_name, {type: 'application/zip'})
+				var rfile = new File([input_file.baseURI], file_name)
+				var file_reader = new FileReader()
+				file_reader.onload = function(evt) {
+					input_file.src = evt.target.result
+					file_binary = evt.target.result
+				}
+
+				const sleep = (milliseconds) => {
+					return new Promise(resolve => setTimeout(resolve, milliseconds))
+				}
+				var pr_commit_id = ""
+				//file_reader.readAsDataURL(rfile)
+				file_reader.readAsText(input_file.files[0], 'UTF-8')
+				//finfo = uploadAndSubmit()
+				sleep(3000).then(() => {
+					repo.fetch()
+					.then(function ({aaa}) {
+					  return repo.branches("master").fetch().then(({commit}) => {
+						let config = {
+						  message: 'test-for-ai-commit-for-create-new-file',
+						  content: btoa(file_reader.result),
+						  branch: new_branch_name,
+						  path: "user_data/" + file_name
+						}
+						// check new_branch_name exist in remote
+						repo.contents("user_data/" + file_name).add(config)
 					  })
 					})
-				})
-			})
-			sleep(120000).then(() => {
-						var new_repo = octo.repos('moo-ai', 'moo-ai.github.io')
-						new_repo.commits.fetch()
-						// Get the IP from repo
-						//var test_pr_commit_id = 'b3d9e158dadef12d813090d213343627d7b74f1a'
-						//pr_commit_id = test_pr_commit_id
-						new_repo.contents("env_info/" + pr_commit_id + ".json").read()
-						.then((json_contents) => {
-							var json_c_obj = JSON.parse(json_contents)
-							var ip_str = json_c_obj['ip']
-							var ip = ip_str.split("\'")[1]
-							var build_id = json_c_obj['build_id']
-							document.getElementById("ip_addr").value = ip
-							document.getElementById("cred").value = "testdemo/testdemo"
-							document.getElementById("res").value = "http://80.158.7.210/logs/1/1/" + pr_commit_id + "/check/ai-on-openlab-test-vm/" + build_id + "/test_results/"
+					sleep(4000)
+					.then(function () {
+					  let pr_conf = {
+							title: new_branch_name + " AI CI Job",
+							body: "So hard to implement by JS.",
+							base: "master",
+							head: "moo-ai:" + new_branch_name
+					  }
+					  sleep(5000).then(function () {
+						  repo.pulls.create(pr_conf)
+						  .then(function (resp) {
+							var pr_num = resp.number
+							repo.pulls(pr_num).fetch()
+							.then(function (body) {
+								pr_commit_id = body.head.sha
+							})
+						  })
 						})
-			})
+					})
+				})
+				sleep(120000).then(() => {
+							var new_repo = octo.repos('moo-ai', 'moo-ai.github.io')
+							new_repo.commits.fetch()
+							// Get the IP from repo
+							//var test_pr_commit_id = 'b3d9e158dadef12d813090d213343627d7b74f1a'
+							//pr_commit_id = test_pr_commit_id
+							new_repo.contents("env_info/" + pr_commit_id + ".json").read()
+							.then((json_contents) => {
+								var json_c_obj = JSON.parse(json_contents)
+								var ip_str = json_c_obj['ip']
+								var ip = ip_str.split("\'")[1]
+								var build_id = json_c_obj['build_id']
+								document.getElementById("ip_addr").value = ip
+								document.getElementById("cred").value = "testdemo/testdemo"
+								document.getElementById("res").value = "http://80.158.7.210/logs/1/1/" + pr_commit_id + "/check/ai-on-openlab-test-vm/" + build_id + "/test_results/"
+							})
+				})
 
-		}
-	</script>
-	<button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
-  </p>
-</form>
+			}
+		</script>
+		<button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
+	  </p>
+	</form>
 
-<h2>The environment Info:</h2>
+	<h2>3. After a while, you'll get the environment info:</h2>
 
-Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
-<br />
-IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly" />
+	Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
+	<br />
+	IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly" />
 
-<h2>Job Result</h2>
+	<h2>4. Once the training or inference job is finished, you'll receive the result link</h2>
 
-<input id="res" type="text" value="" readonly="readonly" />
+	<input id="res" type="text" value="" readonly="readonly" />
 
 
 </body>
