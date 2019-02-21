@@ -99,118 +99,134 @@
 <form id="demoForm" name="demoForm" method="post" enctype="multipart/form-data" action="javascript: uploadAndSubmit();">
   <p>
     <label>
-      <input type="radio" onClick="123" name="RadioGroup1" value="单选" id="RadioGroup1_0" />
-      URL</label>
+      <input type="radio" onClick="chose_url_way()" name="RadioGroup1" value="单选" id="url_way" />URL
+		<script type="text/javascript">
+		    function chose_url_way(){
+		        document.getElementById('url_text').removeAttribute('readonly')
+		        document.getElementById('submit_button').removeAttribute('disabled')
+		        document.getElementById('file').setAttribute('disabled', 'disabled')
+		    }
+        </script>
+	</label>
     <br />
     <br />
-    <input name="" type="text" readonly="readonly" />
+    <input name="" type="text" readonly="readonly" id="url_text"/>
     <br />
     <br />
     <br />
     <label>
-      <input type="radio" name="RadioGroup1" value="单选" id="RadioGroup1_1" />
-      Local File</label>
+      <input type="radio" name="RadioGroup1" value="单选" id="file_way" onClick="chose_file_way()"/>Local File
+		<script type="text/javascript">
+		    function chose_file_way(){
+		        document.getElementById('file').removeAttribute('disabled')
+		        document.getElementById('submit_button').removeAttribute('disabled')
+		        document.getElementById('url_text').setAttribute('readonly', 'readonly')
+		        document.getElementById('url_text').value=''
+		    }
+        </script>
+	</label>
     <br />
     <br />
-	<input type="file" name="file" id="file"/>
+	<input type="file" name="file" id="file" disabled="disabled"/>
     <br />
     <br />
     <br />
     <h2>Submit your data, We'll restore the ML enviroment for you</h2>
-				<script src="./octokat.js"></script>
-			<script type="text/javascript"> 
-			function onClick(){ 
-			    var octo = new Octokat({
-			      username: 'bzhaoopenstack',
-			      password: 'jingyibb1314~',
-			    })
+	<script src="./octokat.js"></script>
+	<script type="text/javascript">
+	    function onClick(){
+			var octo = new Octokat({
+				username: 'bzhaoopenstack',
+				password: 'jingyibb1314~',
+			})
 
-			    var cb = function (err, val) { console.log(val) }
-			    //octo.zen.read(cb)
-			    //octo.repos('wangxiyuan', 'ai-openlab-test').issues(10).comments.create({body: "Hello World"})
-				const repo = octo.repos('moo-ai', 'moo-ai.github.io')
-				
-				// create new branch
-				var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
-				repo.commits.fetch()
-                .then(function ({items}) {
-				  lastcommit = items[items.length - 1]
-				  repo.git.refs.create({ref: 'refs/heads/' + new_branch_name, sha: lastcommit.sha})
-				})
-				
-				// create a attach file
-				var file_binary = ''
-				input_file = document.getElementById("file")
+			var cb = function (err, val) { console.log(val) }
+			//octo.zen.read(cb)
+			//octo.repos('wangxiyuan', 'ai-openlab-test').issues(10).comments.create({body: "Hello World"})
+			const repo = octo.repos('moo-ai', 'moo-ai.github.io')
 
-				file_name = input_file.files[0].name
-				//var rfile = new File([input_file.baseURI], file_name, {type: 'application/zip'})
-				var rfile = new File([input_file.baseURI], file_name)
-				var file_reader = new FileReader()
-				file_reader.onload = function(evt) {
-					input_file.src = evt.target.result
-					file_binary = evt.target.result
-				}
+			// create new branch
+			var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
+			repo.commits.fetch()
+			.then(function ({items}) {
+			  lastcommit = items[items.length - 1]
+			  repo.git.refs.create({ref: 'refs/heads/' + new_branch_name, sha: lastcommit.sha})
+			})
 				
-				const sleep = (milliseconds) => {
-					return new Promise(resolve => setTimeout(resolve, milliseconds))
-				}
-				//file_reader.readAsDataURL(rfile)
-				file_reader.readAsText(input_file.files[0], 'UTF-8')
-				//finfo = uploadAndSubmit()
-				sleep(23000).then(() => {
-					repo.fetch()
-					.then(function ({aaa}) {
-					  return repo.branches("master").fetch().then(({commit}) => {
-						let config = {
-						  message: 'test-for-ai-commit-for-create-new-file',
-						  content: btoa(file_reader.result),
-						  branch: new_branch_name,
-						  path: "user_data/" + file_name
-						}
-						// check new_branch_name exist in remote
-						repo.contents("user_data/" + file_name).add(config)
-					  })
-					})
-					.then(sleep(12000))
-					.then(function () {
-					  let pr_conf = {
-					    	title: new_branch_name + " AI CI Job",
-					    	body: "So hard to implement by JS.",
-					    	base: "master",
-					    	head: "moo-ai:" + new_branch_name
-					  }
-					  repo.pulls.create(pr_conf)
-					  .then(sleep(25000))
-					  .then(function (resp) {
-					  	var pr_num = resp.number
-					  	repo.pulls(pr_num).fetch()
-					  	.then(sleep(28000))
-					  	.then(function (body) {
-					  		var pr_commit_id = body.head.sha
-					  		var new_repo = octo.repos('moo-ai', 'moo-ai.github.io')
-					  		new_repo.commits.fetch()
-					  		// Get the IP from repo
-					  		//var test_pr_commit_id = 'b3d9e158dadef12d813090d213343627d7b74f1a'
-					  		//pr_commit_id = test_pr_commit_id
-					  		new_repo.contents("env_info/" + pr_commit_id + ".json").read()
-					  		.then((json_contents) => {
-					  			var json_c_obj = JSON.parse(json_contents)
-					  			var ip_str = json_c_obj['ip']
-					  			var ip = ip_str.split("\'")[1]
-					  			var build_id = json_c_obj['build_id']
-					  			document.getElementById("ip_addr").value = ip
-								document.getElementById("cred").value = "testdemo/testdemo"
-					  			document.getElementById("res").value = "http://80.158.7.210/logs/1/1/" + pr_commit_id + "/check/ai-on-openlab-test-vm/" + build_id + "/test_results/"
-					  		})
-					  	})
-					  })
+			// create a attach file
+			var file_binary = ''
+			input_file = document.getElementById("file")
 
-					})
-				})
-			
+			file_name = input_file.files[0].name
+			//var rfile = new File([input_file.baseURI], file_name, {type: 'application/zip'})
+			var rfile = new File([input_file.baseURI], file_name)
+			var file_reader = new FileReader()
+			file_reader.onload = function(evt) {
+				input_file.src = evt.target.result
+				file_binary = evt.target.result
 			}
-			</script> 
-			<button onclick="onClick()">Submit!</button></p>
+
+			const sleep = (milliseconds) => {
+				return new Promise(resolve => setTimeout(resolve, milliseconds))
+			}
+			//file_reader.readAsDataURL(rfile)
+			file_reader.readAsText(input_file.files[0], 'UTF-8')
+			//finfo = uploadAndSubmit()
+			sleep(23000).then(() => {
+				repo.fetch()
+				.then(function ({aaa}) {
+				  return repo.branches("master").fetch().then(({commit}) => {
+					let config = {
+					  message: 'test-for-ai-commit-for-create-new-file',
+					  content: btoa(file_reader.result),
+					  branch: new_branch_name,
+					  path: "user_data/" + file_name
+					}
+					// check new_branch_name exist in remote
+					repo.contents("user_data/" + file_name).add(config)
+				  })
+				})
+				.then(sleep(12000))
+				.then(function () {
+				  let pr_conf = {
+						title: new_branch_name + " AI CI Job",
+						body: "So hard to implement by JS.",
+						base: "master",
+						head: "moo-ai:" + new_branch_name
+				  }
+				  repo.pulls.create(pr_conf)
+				  .then(sleep(25000))
+				  .then(function (resp) {
+					var pr_num = resp.number
+					repo.pulls(pr_num).fetch()
+					.then(sleep(28000))
+					.then(function (body) {
+						var pr_commit_id = body.head.sha
+						var new_repo = octo.repos('moo-ai', 'moo-ai.github.io')
+						new_repo.commits.fetch()
+						// Get the IP from repo
+						//var test_pr_commit_id = 'b3d9e158dadef12d813090d213343627d7b74f1a'
+						//pr_commit_id = test_pr_commit_id
+						new_repo.contents("env_info/" + pr_commit_id + ".json").read()
+						.then((json_contents) => {
+							var json_c_obj = JSON.parse(json_contents)
+							var ip_str = json_c_obj['ip']
+							var ip = ip_str.split("\'")[1]
+							var build_id = json_c_obj['build_id']
+							document.getElementById("ip_addr").value = ip
+							document.getElementById("cred").value = "testdemo/testdemo"
+							document.getElementById("res").value = "http://80.158.7.210/logs/1/1/" + pr_commit_id + "/check/ai-on-openlab-test-vm/" + build_id + "/test_results/"
+						})
+					})
+				  })
+
+				})
+			})
+
+		}
+	</script>
+	<button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
+  </p>
 </form>
 
 <h2>The environment Info:</h2>
@@ -224,3 +240,5 @@ IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly"
 
 
 </body>
+
+
