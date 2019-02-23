@@ -1,10 +1,4 @@
-const Octokat = require('octokat')
-
 onmessage = function(evt) {
-    var octo = new Octokat({
-        username: 'bzhaoopenstack',
-        password: 'jingyibb1314~',
-    })
     repo = octo.repos('moo-ai', 'moo-ai.github.io')
     var pr_commit_id = evt.data
     var ip = ''
@@ -18,5 +12,5 @@ onmessage = function(evt) {
             break
         }
     }
-    postMessage(ip + '|' + build_id)
+    postMessage([ip, build_id])
 }
