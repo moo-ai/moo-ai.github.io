@@ -1,3 +1,5 @@
+const Octokat = require('octokat')
+
 onmessage = function(evt) {
     var octo = new Octokat({
         username: 'bzhaoopenstack',
