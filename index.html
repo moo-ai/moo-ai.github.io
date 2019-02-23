@@ -146,7 +146,7 @@
                                                     pr_commit_id = body.head.sha
 
                                                     var worker = new Worker('fetch_env_info.js')
-                                                    worker.postMessage([repo, pr_commit_id])
+                                                    worker.postMessage(repo)
                                                     worker.onmessage = function(event) {
                                                         data = event.data
                                                         ip = data.split("|")[0]
