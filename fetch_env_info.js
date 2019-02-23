@@ -7,7 +7,7 @@ onmessage = function (evt) {
 					var ip_str = json_c_obj['ip']
 					ip = ip_str.split("\'")[1]
 					var build_id = json_c_obj['build_id']
-					if ip !='' {
+					if (ip !='') {
 						break
 					}
 				}
