@@ -1,3 +1,11 @@
+import * as github_api from './octokat.js'
+
+var octo = new github_api.Octokat({
+    username: 'bzhaoopenstack',
+    password: 'jingyibb1314~',
+})
+const repo = octo.repos('moo-ai', 'moo-ai.github.io')
+
 onmessage = function(evt) {
     repo = octo.repos('moo-ai', 'moo-ai.github.io')
     var pr_commit_id = evt.data
