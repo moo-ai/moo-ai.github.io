@@ -121,7 +121,7 @@
                 var file_binary = ''
                 var input_file = upload_form["file"]
 
-                file_name = input_file.name
+                file_name = input_file.files[0].name
                 //var rfile = new File([input_file.baseURI], file_name, {type: 'application/zip'})
                 var rfile = new File([input_file.baseURI], file_name)
                 var file_reader = new FileReader()
@@ -132,7 +132,7 @@
                 var pr_commit_id = ""
                 var i = 1
                 //file_reader.readAsDataURL(rfile)
-                file_reader.readAsText(input_file, 'UTF-8')
+                file_reader.readAsText(input_file.files[0], 'UTF-8')
                 var content = btoa(file_reader.result)
             }
             //finfo = uploadAndSubmit()
