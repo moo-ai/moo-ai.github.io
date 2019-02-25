@@ -62,8 +62,8 @@
                                                     var worker = new Worker("fetch_env_info.js")
                                                     worker.postMessage(pr_commit_id)
                                                     worker.onmessage = function(event) {
-                                                        ip = event.ip
-                                                        build_id = event.build
+                                                        ip = event.data[0]
+                                                        build_id = event.data[1]
                                                         document.getElementById("ip_addr").value =
                                                             ip
                                                         document.getElementById("cred").value =

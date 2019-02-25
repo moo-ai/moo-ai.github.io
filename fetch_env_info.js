@@ -19,8 +19,7 @@ onmessage = function(evt) {
     var env_request
 
     while (no_content) {
-        wait(10000)
- 
+        wait(30000)
         env_request = new XMLHttpRequest()
         env_request.onreadystatechange = function() {
             if (env_request.readyState === 4) {
@@ -29,7 +28,6 @@ onmessage = function(evt) {
                     var ip_str = json_c_obj['ip']
                     ip = ip_str.split("\'")[1]
                     build_id = json_c_obj['build_id']
-
                     no_content = false
                     postMessage([ip, build_id])
                 }
