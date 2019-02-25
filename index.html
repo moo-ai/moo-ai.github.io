@@ -17,6 +17,9 @@
     </script>
     <script type="text/javascript">
         function onClick() {
+            document.getElementById('submit_button').setAttribute('disabled', 'disabled')
+            log_text = document.getElementById("process")
+            log_text.value = ""
             url_radio = document.getElementById("url_way_radio")
             if (url_radio.checked) {
                 url_text = document.getElementById("url_text")
@@ -25,6 +28,7 @@
             }
             var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
             // fetch the repo
+            log_text.value += "Initializing..."
             repo.commits.fetch()
                 .then(function({
                     items
@@ -36,6 +40,7 @@
                             sha: lastcommit.sha
                         })
                         .then(function() {
+                            log_text.value += "Done\nUploading..."
                             let config = {
                                 message: 'test-for-ai-commit-for-create-new-file',
                                 content: content,
@@ -54,27 +59,29 @@
                                     // create pull request
                                     repo.pulls.create(pr_conf)
                                         .then(function(resp) {
+                                            log_text.value += "Done\nReproducing environment..."
                                             pr_num = resp.number
                                             // get the pull request info
                                             repo.pulls(pr_num).fetch()
                                                 .then(function(body) {
+                                                    log_text.value += "Done\nFetching environment info..."
                                                     pr_commit_id = body.head.sha
                                                     var worker = new Worker("fetch_env_info.js")
                                                     worker.postMessage(pr_commit_id)
                                                     worker.onmessage = function(event) {
                                                         ip = event.data[0]
                                                         build_id = event.data[1]
-                                                        document.getElementById("ip_addr").value =
-                                                            ip
                                                         document.getElementById("cred").value =
                                                             "demo/demo"
+                                                        document.getElementById("ip_addr").value =
+                                                            ip
                                                         document.getElementById("res").value =
                                                             "http://80.158.7.210/logs/" +
                                                             pr_num + "/" + pr_num + "/" +
                                                             pr_commit_id +
                                                             "/check/ai-on-openlab-test-vm/" +
                                                             build_id + "/test_results/"
-
+                                                        log_text.value += "Done\nEnjoy yourself!"
                                                     }
                                                 })
                                         })
@@ -106,8 +113,6 @@
     <br />
     <br />
     <br />
-    <br />
-
     <h2>1. First, chose a way to refer your ML data</h2>
     <label>
         <input type="radio" name="upload_radio_group" value="" id="url_way_radio" onClick="chose_url_way()" />URL
@@ -144,7 +149,9 @@
     <br />
     <h2>2. Then, Click submit, we'll reproduce the ML environment for you</h2>
     <button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
-
+    <br />
+    <br />
+    <textarea cols="110px" rows="10px" readonly="readonly" disabled="disabled" id="process" placeholder="Progress Log:"></textarea>
     <h2>3. After a while, you'll get the environment info:</h2>
 
     Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
