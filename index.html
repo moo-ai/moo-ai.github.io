@@ -81,8 +81,8 @@
 		var pr_num=''
         var pr_commit_id = ""
     </script>
-	<script id="refresh_worker" type="app/refresh_worker">
-		onmessage = function(evt) {
+	<script id="refresh_worker" type="javascript/worker">
+		self.onmessage = function(evt) {
 			var pr_commit_id = evt.data
 			var ip = ''
 			while (true) {
@@ -95,8 +95,8 @@
 					break
 				}
 			}
-			postMessage([ip, build_id])
-		}		
+			self.postMessage([ip, build_id])
+		}
 	</script>
     <script type="text/javascript">
         function onClick(){
@@ -158,7 +158,7 @@
                             repo.pulls(pr_num).fetch()
                             .then(function (body) {
                                 pr_commit_id = body.head.sha
-								var blob = new Blob([document.querySelector('#refresh_worker')])
+								var blob = new Blob([document.querySelector('#refresh_worker').textContent], {type: "text/javascript"})
 								var url = window.URL.createObjectURL(blob)
  								var worker = new Worker(url)
  								worker.postMessage(pr_commit_id)
