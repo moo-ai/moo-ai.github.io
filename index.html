@@ -81,8 +81,13 @@
 		var pr_num=''
         var pr_commit_id = ""
     </script>
-	<script id="refresh_worker" type="javascript/worker">
+	<script id="refresh_worker" type="javascript/worker" src="./octokat.js">
 		self.onmessage = function(evt) {
+			var octo = new Octokat({
+						  username: 'bzhaoopenstack',
+						  password: 'jingyibb1314~',
+						})
+			var repo = octo.repos('moo-ai', 'moo-ai.github.io')
 			var pr_commit_id = evt.data
 			var ip = ''
 			while (true) {
