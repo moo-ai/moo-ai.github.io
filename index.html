@@ -2,71 +2,6 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>MOO</title>
-    <script type="text/javascript">
-        function uploadAndSubmit() {
-            upload_form = document.forms["upload_form"]
-            url_radio = upload_form["url_way_radio"]
-            if (!url_radio.checked) {
-                if (upload_form["file"].files.length > 0) {
-                    file = upload_form["file"].files[0];
-
-                    // try sending
-                    reader = new FileReader();
-                    reader.onloadend = function() {
-                        if (reader.error) {
-                            console.log(reader.error);
-                        } else {
-                            var xhr = new XMLHttpRequest();
-                            xhr.open( /* method */ "POST", /* target url */ "upload.jsp?fileName=" + file.name /*, async, default to true */ );
-                            xhr.overrideMimeType("application/octet-stream");
-                            XMLHttpRequest.prototype.sendAsBinary = function(text) {
-                                var data = new ArrayBuffer(text.length);
-                                var ui8a = new Uint8Array(data, 0);
-                                for (var i = 0; i < text.length; i++) ui8a[i] = (text.charCodeAt(i) & 0xff);
-
-                                //var bb = new BlobBuilder(); // doesn't exist in Firefox 4
-                                //bb.append(data);
-                                //var blob = bb.getBlob();
-                                //this.send(blob);
-                            }
-                            xhr.sendAsBinary(reader.result);
-                            xhr.onreadystatechange = function() {
-                                if (xhr.readyState == 4) {
-                                    if (xhr.status == 200) {
-                                        console.log("upload complete");
-                                        console.log("response: " + xhr.responseText);
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                    if (!FileReader.prototype.readAsBinaryString) {
-                        FileReader.prototype.readAsBinaryString = function(fileData) {
-                            var binary = "";
-                            var pt = this;
-                            var reader1 = new FileReader();
-                            reader1.onload = function(e) {
-                                var bytes = new Uint8Array(reader1.result);
-                                var length = bytes.byteLength;
-                                for (var i = 0; i < length; i++) {
-                                    binary += String.fromCharCode(bytes[i]);
-                                }
-                                //pt.result  - readonly so assign binary
-                                pt.content = binary;
-                                $(pt).trigger('onloadend');
-                            }
-                            return reader1.readAsArrayBuffer(fileData);
-                        }
-                    }
-                } else {
-                    alert("Please choose a file.");
-                }
-            }
-        }
-    </script>
-</head>
-
 <body>
     <script src="./octokat.js"></script>
     <script type="text/javascript">
@@ -77,38 +12,18 @@
         const repo = octo.repos('moo-ai', 'moo-ai.github.io')
         var pr_num = ''
         var pr_commit_id = ""
+        var file_name
+        var content
     </script>
     <script type="text/javascript">
         function onClick() {
-            upload_form = document.forms["upload_form"]
-            var cb = function(err, val) {
-                console.log(val)
-            }
-            url_radio = upload_form["url_way_radio"]
-
+            url_radio = document.getElementById("url_way_radio")
             if (url_radio.checked) {
-                var content = btoa(url_text.value)
-                var file_name = "url.txt"
-            } else {
-                var file_binary = ''
-                var input_file = upload_form["file"]
-
-                file_name = input_file.files[0].name
-                //var rfile = new File([input_file.baseURI], file_name, {type: 'application/zip'})
-                var rfile = new File([input_file.baseURI], file_name)
-                var file_reader = new FileReader()
-                file_reader.onload = function(evt) {
-                    input_file.src = evt.target.result
-                    file_binary = evt.target.result
-                }
-                var i = 1
-                //file_reader.readAsDataURL(rfile)
-                file_reader.readAsText(input_file.files[0], 'UTF-8')
-                var content = btoa(file_reader.result)
+                url_text = document.getElementById("url_text")
+                file_name = 'url.txt'
+                content = btoa(url_text.value)
             }
-
             var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
-
             // fetch the repo
             repo.commits.fetch()
                 .then(function({
@@ -167,7 +82,23 @@
                         })
                 })
         }
+
+        function read_input_file(files) {
+            var file = files[0]
+            var file_reader = new FileReader()
+            file_name = file.name
+            file_reader.readAsBinaryString(file)
+            file_reader.onload = function () {
+                content = btoa(file_reader.result)
+                document.getElementById('submit_button').removeAttribute('disabled')
+            }
+        }
+
+        function read_url(value) {
+            document.getElementById('submit_button').removeAttribute('disabled')
+        }
     </script>
+
 
     <center>
         <h1>Machine Learning On OpenLab</h1>
@@ -176,57 +107,51 @@
     <br />
     <br />
     <br />
-    <form id="upload_form" name="upload_form" method="post" enctype="multipart/form-data" action="javascript: uploadAndSubmit();">
-        <h2>1. First, chose a way to refer your ML data</h2>
-        <label>
-            <input type="radio" name="upload_radio_group" value="" id="url_way_radio" onClick="chose_url_way()" />URL
-            <script type="text/javascript">
-                function chose_url_way() {
-                    document.getElementById('url_text').removeAttribute('readonly')
-                    document.getElementById('submit_button').removeAttribute('disabled')
-                    document.getElementById('file').setAttribute('disabled', 'disabled')
-                }
-            </script>
-        </label>
-        <br />
-        <br />
-        <input name="" type="text" readonly="readonly" id="url_text" />
-        <br />
-        <br />
-        <br />
-        <label>
-            <input type="radio" name="upload_radio_group" value="" id="file_way_radio" onClick="chose_file_way()" />Local
-            File
-            <script type="text/javascript">
-                function chose_file_way() {
-                    document.getElementById('file').removeAttribute('disabled')
-                    document.getElementById('submit_button').removeAttribute('disabled')
-                    document.getElementById('url_text').setAttribute('readonly', 'readonly')
-                    document.getElementById('url_text').value = ''
-                }
-            </script>
-        </label>
-        <br />
-        <br />
-        <input type="file" name="file" id="file" disabled="disabled" />
-        <br />
-        <br />
-        <h2>2. Then, Click submit, we'll reproduce the ML environment for you</h2>
-        <button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
-    </form>
+
+    <h2>1. First, chose a way to refer your ML data</h2>
+    <label>
+        <input type="radio" name="upload_radio_group" value="" id="url_way_radio" onClick="chose_url_way()" />URL
+        <script type="text/javascript">
+            function chose_url_way() {
+                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
+                document.getElementById('url_text').removeAttribute('readonly')
+                document.getElementById('file').setAttribute('disabled', 'disabled')
+            }
+        </script>
+    </label>
+    <br />
+    <br />
+    <input name="" type="text" readonly="readonly" id="url_text" onfocus="read_url(this.value)"/>
+    <br />
+    <br />
+    <br />
+    <label>
+        <input type="radio" name="upload_radio_group" value="" id="file_way_radio" onClick="chose_file_way()" />Local
+        File
+        <script type="text/javascript">
+            function chose_file_way() {
+                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
+                document.getElementById('file').removeAttribute('disabled')
+                document.getElementById('url_text').setAttribute('readonly', 'readonly')
+                document.getElementById('url_text').value = ''
+            }
+        </script>
+    </label>
+    <br />
+    <br />
+    <input type="file" name="file" id="file" disabled="disabled" onchange="read_input_file(this.files)"/>
+    <br />
+    <br />
+    <h2>2. Then, Click submit, we'll reproduce the ML environment for you</h2>
+    <button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
 
     <h2>3. After a while, you'll get the environment info:</h2>
 
     Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
-    <br>
+    <br />
     IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly" />
 
     <h2>4. Once the training or inference job is finished, you can visit the link below to get the result data</h2>
 
     Result Link: <input id="res" type="text" value="" readonly="readonly" />
-    <script id="get_env_worker" type="get_env/worker">
-        addEventListener('message', function (){
-			postMessage('some message')
-		})
-	</script>
 </body>
