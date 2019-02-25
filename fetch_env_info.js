@@ -13,8 +13,8 @@ onmessage = function(evt) {
         return new Promise(resolve => setTimeout(resolve, milliseconds))
     }
     var pr_commit_id = evt.data
-    var ip = ''
-    var build_id = ''
+    var ip = 'none'
+    var build_id = 'none'
     var no_content = true
     var env_request
 
@@ -29,6 +29,9 @@ onmessage = function(evt) {
                     ip = ip_str.split("\'")[1]
                     build_id = json_c_obj['build_id']
                     no_content = false
+                    postMessage([ip, build_id])
+                }
+                else{
                     postMessage([ip, build_id])
                 }
             }

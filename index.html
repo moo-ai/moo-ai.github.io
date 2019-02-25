@@ -64,24 +64,32 @@
                                             // get the pull request info
                                             repo.pulls(pr_num).fetch()
                                                 .then(function(body) {
-                                                    log_text.value += "Done\nFetching environment info..."
+                                                    var times = 1
+                                                    log_text.value += "Done\nFetching environment info(" + times + ")..."
                                                     pr_commit_id = body.head.sha
                                                     var worker = new Worker("fetch_env_info.js")
                                                     worker.postMessage(pr_commit_id)
                                                     worker.onmessage = function(event) {
                                                         ip = event.data[0]
                                                         build_id = event.data[1]
-                                                        document.getElementById("cred").value =
-                                                            "demo/demo"
-                                                        document.getElementById("ip_addr").value =
-                                                            ip
-                                                        document.getElementById("res").value =
-                                                            "http://80.158.7.210/logs/" +
-                                                            pr_num + "/" + pr_num + "/" +
-                                                            pr_commit_id +
-                                                            "/check/ai-on-openlab-test-vm/" +
-                                                            build_id + "/test_results/"
-                                                        log_text.value += "Done\nEnjoy yourself!"
+                                                        if (ip === 'none') {
+                                                            times += 1
+                                                            log_text.value += "\nFetching environment info(" + times + ")..."
+                                                        }
+                                                        else {
+                                                            document.getElementById("cred").value =
+                                                                "demo/demo"
+                                                            document.getElementById("ip_addr").value =
+                                                                ip
+                                                            document.getElementById("res").value =
+                                                                "http://80.158.7.210/logs/" +
+                                                                pr_num + "/" + pr_num + "/" +
+                                                                pr_commit_id +
+                                                                "/check/ai-on-openlab-test-vm/" +
+                                                                build_id + "/test_results/"
+                                                            log_text.value += "Done\nEnjoy yourself!"                                                            
+                                                        }
+
                                                     }
                                                 })
                                         })
