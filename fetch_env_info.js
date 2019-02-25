@@ -6,7 +6,7 @@ onmessage = function(evt) {
 	
 	env_request.onreadystatechange = function () {
 		if (env_request.readyState === 4) {
-			if env_request.status === 200 {
+			if (env_request.status === 200) {
 				var json_c_obj = JSON.parse(env_request.responseText)
 				var ip_str = json_c_obj['ip']
 				ip = ip_str.split("\'")[1]
