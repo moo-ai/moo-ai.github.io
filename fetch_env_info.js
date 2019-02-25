@@ -1,24 +1,23 @@
-import * as github_api from './octokat.js'
-
-var octo = new github_api.Octokat({
-    username: 'bzhaoopenstack',
-    password: 'jingyibb1314~',
-})
-const repo = octo.repos('moo-ai', 'moo-ai.github.io')
-
 onmessage = function(evt) {
-    repo = octo.repos('moo-ai', 'moo-ai.github.io')
     var pr_commit_id = evt.data
     var ip = ''
-    while (true) {
-        repo.contents("env_info/" + pr_commit_id + ".json").read()
-        var json_c_obj = JSON.parse(json_contents)
-        var ip_str = json_c_obj['ip']
-        ip = ip_str.split("\'")[1]
-        var build_id = json_c_obj['build_id']
-        if (ip != '') {
-            break
-        }
-    }
-    postMessage([ip, build_id])
+	var build_id = ''
+	var env_request = new XMLHttpRequest()
+	
+	env_request.onreadystatechange = function () {
+		if (env_request.readyState === 4) {
+			if env_request.status === 200 {
+				var json_c_obj = JSON.parse(env_request.responseText)
+				var ip_str = json_c_obj['ip']
+				ip = ip_str.split("\'")[1]
+				build_id = json_c_obj['build_id']
+				postMessage([ip, build_id])
+			}
+			else {
+				env_request.send()
+			}
+		}
+	}
+	env_request.open('GET', '/env_info/' + pr_commit_id + '.json', false)
+	env_request.send() 
 }
