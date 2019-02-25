@@ -36,7 +36,7 @@ onmessage = function(evt) {
                 }
             }
         }
-        env_request.open('GET', 'https://raw.githubusercontent.com/moo-ai/moo-ai.github.io/master/env_info/' + pr_commit_id + '.json', false)
+        env_request.open('GET', 'https://github.com/moo-ai/moo-ai.github.io/raw/master/env_info/' + pr_commit_id + '.json', false)
         env_request.send()
     }
 }
