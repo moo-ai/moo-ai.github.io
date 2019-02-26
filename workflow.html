@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>MOO-WorkFlow</title>
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+</head>
 <body>
     <script src="https://unpkg.com/vue/dist/vue.js" type="text/javascript"></script>
     <script src="./octokat.js"></script>
@@ -124,59 +130,78 @@
         }
     </script>
 
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <center>
+                        <h1>
+                            Machine Learning On OpenLab <small>Metadata Description Demo</small>
+                        </h1>
+                    </center>
+                    <br />
+                    <br />
+                </div>
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">WorkFlow</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="status.html">Status</a>
+                    </li>
+                </ul>
+            </div>
+            <h2>1. First, chose a way to refer your ML data</h2>
+            <label>
+                <input type="radio" name="upload_radio_group" value="" id="url_way_radio" onClick="chose_url_way()" />URL
+                <script type="text/javascript">
+                    function chose_url_way() {
+                        document.getElementById('submit_button').setAttribute('disabled', 'disabled')
+                        document.getElementById('url_text').removeAttribute('readonly')
+                        document.getElementById('file').setAttribute('disabled', 'disabled')
+                    }
+                </script>
+            </label>
+            <br />
+            <br />
+            <input name="" type="text" readonly="readonly" id="url_text" onfocus="read_url(this.value)"/>
+            <br />
+            <br />
+            <br />
+            <label>
+                <input type="radio" name="upload_radio_group" value="" id="file_way_radio" onClick="chose_file_way()" />Local
+                File
+                <script type="text/javascript">
+                    function chose_file_way() {
+                        document.getElementById('submit_button').setAttribute('disabled', 'disabled')
+                        document.getElementById('file').removeAttribute('disabled')
+                        document.getElementById('url_text').setAttribute('readonly', 'readonly')
+                        document.getElementById('url_text').value = ''
+                    }
+                </script>
+            </label>
+            <br />
+            <br />
+            <input type="file" name="file" id="file" disabled="disabled" onchange="read_input_file(this.files)"/>
+            <br />
+            <br />
+            <h2>2. Then, Click submit, we'll reproduce the ML environment for you</h2>
+            <button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
+            <br />
+            <br />
+            <textarea style="font-size:16px;resize:none;" cols="90px" rows="10px" readonly="readonly" disabled="disabled" id="process" placeholder="Progress Log will be printed here."></textarea>
+            <h2>3. After a while, you'll get the environment info:</h2>
 
-    <center>
-        <h1>Machine Learning On OpenLab</h1>
-    </center>
-    <br />
-    <br />
-    <br />
-    <h2>1. First, chose a way to refer your ML data</h2>
-    <label>
-        <input type="radio" name="upload_radio_group" value="" id="url_way_radio" onClick="chose_url_way()" />URL
-        <script type="text/javascript">
-            function chose_url_way() {
-                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-                document.getElementById('url_text').removeAttribute('readonly')
-                document.getElementById('file').setAttribute('disabled', 'disabled')
-            }
-        </script>
-    </label>
-    <br />
-    <br />
-    <input name="" type="text" readonly="readonly" id="url_text" onfocus="read_url(this.value)"/>
-    <br />
-    <br />
-    <br />
-    <label>
-        <input type="radio" name="upload_radio_group" value="" id="file_way_radio" onClick="chose_file_way()" />Local
-        File
-        <script type="text/javascript">
-            function chose_file_way() {
-                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-                document.getElementById('file').removeAttribute('disabled')
-                document.getElementById('url_text').setAttribute('readonly', 'readonly')
-                document.getElementById('url_text').value = ''
-            }
-        </script>
-    </label>
-    <br />
-    <br />
-    <input type="file" name="file" id="file" disabled="disabled" onchange="read_input_file(this.files)"/>
-    <br />
-    <br />
-    <h2>2. Then, Click submit, we'll reproduce the ML environment for you</h2>
-    <button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
-    <br />
-    <br />
-    <textarea style="font-size:16px;resize:none;" cols="90px" rows="10px" readonly="readonly" disabled="disabled" id="process" placeholder="Progress Log will be printed here."></textarea>
-    <h2>3. After a while, you'll get the environment info:</h2>
+            Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
+            <br />
+            IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly" />
 
-    Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
-    <br />
-    IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly" />
+            <h2>4. Once the training or inference job is finished, you can visit the link below to get the result data</h2>
 
-    <h2>4. Once the training or inference job is finished, you can visit the link below to get the result data</h2>
-
-    Result Link: <input id="res" type="text" value="" readonly="readonly" />
+            Result Link: <input id="res" type="text" value="" readonly="readonly" />
+        </div>
+    </div>
 </body>
