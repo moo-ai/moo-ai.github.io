@@ -1,177 +1,61 @@
 <!DOCTYPE html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>MOO</title>
-<body>
-    <script src="./octokat.js"></script>
-    <script type="text/javascript">
-        var octo = new Octokat({
-            username: 'bzhaoopenstack',
-            password: 'jingyibb1314~',
-        })
-        const repo = octo.repos('moo-ai', 'moo-ai.github.io')
-        var pr_num = ''
-        var pr_commit_id = ""
-        var file_name
-        var content
-    </script>
-    <script type="text/javascript">
-        function onClick() {
-            document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-            log_text = document.getElementById("process")
-            log_text.value = ""
-            url_radio = document.getElementById("url_way_radio")
-            if (url_radio.checked) {
-                url_text = document.getElementById("url_text")
-                file_name = 'url.txt'
-                content = btoa(url_text.value)
-            }
-            var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
-            // fetch the repo
-            log_text.value += "Initializing..."
-            repo.commits.fetch()
-                .then(function({
-                    items
-                }) {
-                    lastcommit = items[items.length - 1]
-                    // create branch
-                    repo.git.refs.create({
-                            ref: 'refs/heads/' + new_branch_name,
-                            sha: lastcommit.sha
-                        })
-                        .then(function() {
-                            log_text.value += "Done\nUploading..."
-                            let config = {
-                                message: 'test-for-ai-commit-for-create-new-file',
-                                content: content,
-                                branch: new_branch_name,
-                                path: "user_data/" + file_name
-                            }
-                            // upload file
-                            repo.contents("user_data/" + file_name).add(config)
-                                .then(function() {
-                                    let pr_conf = {
-                                        title: new_branch_name + " AI CI Job",
-                                        body: "So hard to implement by JS.",
-                                        base: "master",
-                                        head: "moo-ai:" + new_branch_name
-                                    }
-                                    // create pull request
-                                    repo.pulls.create(pr_conf)
-                                        .then(function(resp) {
-                                            log_text.value += "Done\nReproducing environment..."
-                                            pr_num = resp.number
-                                            // get the pull request info
-                                            repo.pulls(pr_num).fetch()
-                                                .then(function(body) {
-                                                    var times = 1
-                                                    log_text.value += "Done\nFetching environment info(" + times + ")..."
-                                                    pr_commit_id = body.head.sha
-                                                    var worker = new Worker("fetch_env_info.js")
-                                                    worker.postMessage(pr_commit_id)
-                                                    worker.onmessage = function(event) {
-                                                        ip = event.data[0]
-                                                        build_id = event.data[1]
-                                                        if (ip === 'none') {
-                                                            times += 1
-                                                            log_text.value += "\nFetching environment info(" + times + ")..."
-                                                        }
-                                                        else {
-                                                            document.getElementById("cred").value =
-                                                                "demo/demo"
-                                                            document.getElementById("ip_addr").value =
-                                                                ip
-                                                            document.getElementById("res").value =
-                                                                "http://80.158.7.210/logs/" +
-                                                                pr_num + "/" + pr_num + "/" +
-                                                                pr_commit_id +
-                                                                "/check/ai-on-openlab-test-vm/" +
-                                                                build_id + "/test_results/"
-                                                            log_text.value += "Done\nEnjoy yourself!"                                                            
-                                                        }
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-                                                    }
-                                                })
-                                        })
-                                })
-                        })
-                })
-        }
+        <title>MOO-HomePage</title>
 
-        function read_input_file(files) {
-            var file = files[0]
-            var file_reader = new FileReader()
-            file_name = file.name
-            file_reader.readAsBinaryString(file)
-            file_reader.onload = function () {
-                if (!file_name.endsWith("zip")) {
-                    alert("Please specify a zip file instead.")
-                }
-                else {
-                    content = btoa(file_reader.result)
-                    document.getElementById('submit_button').removeAttribute('disabled')
-                }
-            }
-        }
+        <meta name="description" content="Source code generated using layoutit.com">
+        <meta name="author" content="LayoutIt!">
 
-        function read_url(value) {
-            document.getElementById('submit_button').removeAttribute('disabled')
-        }
-    </script>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
 
-
-    <center>
-        <h1>Machine Learning On OpenLab</h1>
-    </center>
-    <br />
-    <br />
-    <br />
-    <h2>1. First, chose a way to refer your ML data</h2>
-    <label>
-        <input type="radio" name="upload_radio_group" value="" id="url_way_radio" onClick="chose_url_way()" />URL
-        <script type="text/javascript">
-            function chose_url_way() {
-                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-                document.getElementById('url_text').removeAttribute('readonly')
-                document.getElementById('file').setAttribute('disabled', 'disabled')
-            }
-        </script>
-    </label>
-    <br />
-    <br />
-    <input name="" type="text" readonly="readonly" id="url_text" onfocus="read_url(this.value)"/>
-    <br />
-    <br />
-    <br />
-    <label>
-        <input type="radio" name="upload_radio_group" value="" id="file_way_radio" onClick="chose_file_way()" />Local
-        File
-        <script type="text/javascript">
-            function chose_file_way() {
-                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-                document.getElementById('file').removeAttribute('disabled')
-                document.getElementById('url_text').setAttribute('readonly', 'readonly')
-                document.getElementById('url_text').value = ''
-            }
-        </script>
-    </label>
-    <br />
-    <br />
-    <input type="file" name="file" id="file" disabled="disabled" onchange="read_input_file(this.files)"/>
-    <br />
-    <br />
-    <h2>2. Then, Click submit, we'll reproduce the ML environment for you</h2>
-    <button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
-    <br />
-    <br />
-    <textarea style="font-size:16px;resize:none;" cols="90px" rows="10px" readonly="readonly" disabled="disabled" id="process" placeholder="Progress Log will be printed here."></textarea>
-    <h2>3. After a while, you'll get the environment info:</h2>
-
-    Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
-    <br />
-    IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly" />
-
-    <h2>4. Once the training or inference job is finished, you can visit the link below to get the result data</h2>
-
-    Result Link: <input id="res" type="text" value="" readonly="readonly" />
-</body>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-header">
+                        <center>
+                            <h1>
+                                Machine Learning On OpenLab <small>Metadata Description Demo</small>
+                            </h1>
+                        </center>
+                        <br />
+                        <br />
+                    </div>
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="workflow.html">WorkFlow</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="status.html">Status</a>
+                        </li>
+                    </ul>
+                    <div class="jumbotron card card-block">
+                        <h2>
+                            Hello, world!
+                        </h2>
+                        <p>
+                            This is a template for a simple marketing or informational website. It includes a large
+                            callout called the hero unit and three supporting pieces of content. Use it as a starting
+                            point to create something more unique.
+                        </p>
+                        <p>
+                            <a class="btn btn-primary btn-large" href="#">Learn more</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
