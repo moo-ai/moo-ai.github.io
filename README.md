@@ -4,7 +4,7 @@ The repo for AI model deployment on openlab
 
 ## How to use
 
-Visit the [home page](http://moo-ai.github.io) to upload your AI training or
+Visit the [page](http://moo-ai.github.io/workflow.html) to upload your AI training or
 inference data.
 
 Your data is usually be a ZIP file or a link which can reference your ZIP file.
