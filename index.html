@@ -104,8 +104,13 @@
             file_name = file.name
             file_reader.readAsBinaryString(file)
             file_reader.onload = function () {
-                content = btoa(file_reader.result)
-                document.getElementById('submit_button').removeAttribute('disabled')
+                if (!file_name.endsWith("zip")) {
+                    alert("Please specify a zip file instead.")
+                }
+                else {
+                    content = btoa(file_reader.result)
+                    document.getElementById('submit_button').removeAttribute('disabled')
+                }
             }
         }
 
