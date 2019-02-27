@@ -129,6 +129,19 @@
             function read_url(value) {
                 document.getElementById('submit_button').removeAttribute('disabled')
             }
+
+            function chose_url_way() {
+                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
+                document.getElementById('url_text').removeAttribute('readonly')
+                document.getElementById('file').setAttribute('disabled', 'disabled')
+            }
+
+            function chose_file_way() {
+                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
+                document.getElementById('file').removeAttribute('disabled')
+                document.getElementById('url_text').setAttribute('readonly', 'readonly')
+                document.getElementById('url_text').value = ''
+            }
         </script>
 
         <div class="container-fluid">
@@ -151,56 +164,55 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <h2>First, chose a way to refer your ML data</h2>
-                    <label>
-                        <input type="radio" name="upload_radio_group" value="" id="url_way_radio" onClick="chose_url_way()" />URL
-                        <script type="text/javascript">
-                            function chose_url_way() {
-                                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-                                document.getElementById('url_text').removeAttribute('readonly')
-                                document.getElementById('file').setAttribute('disabled', 'disabled')
-                            }
-                        </script>
-                    </label>
-                    <br />
-                    <br />
-                    <input name="" type="text" readonly="readonly" id="url_text" onfocus="read_url(this.value)" />
-                    <br />
-                    <br />
-                    <br />
-                    <label>
-                        <input type="radio" name="upload_radio_group" value="" id="file_way_radio" onClick="chose_file_way()" />Local
-                        File
-                        <script type="text/javascript">
-                            function chose_file_way() {
-                                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-                                document.getElementById('file').removeAttribute('disabled')
-                                document.getElementById('url_text').setAttribute('readonly', 'readonly')
-                                document.getElementById('url_text').value = ''
-                            }
-                        </script>
-                    </label>
-                    <br />
-                    <br />
-                    <input type="file" name="file" id="file" disabled="disabled" onchange="read_input_file(this.files)" />
-                    <br />
-                    <br />
-                    <h2>2. Then, Click submit, we'll reproduce the ML environment for you</h2>
-                    <button onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
-                    <br />
-                    <br />
-                    <textarea style="font-size:16px;resize:none;" cols="90px" rows="10px" readonly="readonly" disabled="disabled"
-                        id="process" placeholder="Progress Log will be printed here."></textarea>
-                    <h2>3. After a while, you'll get the environment info:</h2>
-
-                    Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
-                    <br />
-                    IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly" />
-
-                    <h2>4. Once the training or inference job is finished, you can visit the link below to get the
-                        result data</h2>
-
-                    Result Link: <input id="res" type="text" value="" readonly="readonly" />
+                    <div class="card">
+                        <div class="card-header">First, chose a way to refer your ML data</div>
+                        <div class="card-body">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="upload_radio_group" value="" id="url_way_radio"
+                                            onClick="chose_url_way()" />
+                                    </div>
+                                </div>
+                                <input name="" type="text" class="form-control" readonly="readonly" id="url_text"
+                                    onfocus="read_url(this.value)" />
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="radio" name="upload_radio_group" value="" id="file_way_radio"
+                                            onClick="chose_file_way()" />
+                                    </div>
+                                </div>
+                                <input type="file" name="file" id="file" disabled="disabled" onchange="read_input_file(this.files)" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Then, Click submit, we'll reproduce the ML environment for you</div>
+                        <div class="card-body">
+                            <button type="button" class="btn btn-primary" onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
+                            <br />
+                            <br />
+                            <textarea style="font-size:16px;resize:none;" cols="90px" rows="10px" readonly="readonly"
+                                disabled="disabled" id="process" placeholder="Progress Log will be printed here."></textarea>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">After a while, you'll get the environment info</div>
+                        <div class="card-body">
+                            Credential: <input name="" id="cred" type="text" value="" readonly="readonly" />
+                            <br />
+                            IP address: <input name="" id="ip_addr" type="text" value="" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">Once the training or inference job is finished, you can visit the link
+                            below to get the result data</div>
+                        <div class="card-body">
+                            Result Link: <input id="res" type="text" value="" readonly="readonly" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
