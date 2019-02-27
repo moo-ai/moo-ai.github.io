@@ -24,27 +24,55 @@
                             <li class="nav-item">
                                 <a class="nav-link" href="status.html">Status</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="guide.html">Guide</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
             </div>
             <div class="row">
-                <div class="col-2"></div>
-                <div class="col-8" style="font-family: Arial;">
+                <div class="col-12" style="font-family: Arial; font-size: 18px;">
                     <div class="jumbotron card card-block">
                         <h2 class="text-primary"> Machine Learning On OpenLab </h2>
                         <hr class="my-4">
                         <p>
-                            <b>Machine Learning On Openlab</b>(MOO) is a web service that can reproduce Maching
-                            Learning(ML) training or inferring environment for ML users. To recreate the ML workspace
-                            on OpenLab, users must provide some information to describ their env.
+                            <b>Machine Learning On Openlab</b>(MOO) is a web service that can reproduce Machine
+                            Learning(ML) training or inferring environment for ML developers or operators.
+                        </p>
+                        <p>
+                            Nowadays, developers can easily download some ML models from internet(e.g some ML model
+                            marketplaces). Those models are either trained or not. To use them, developers have to
+                            setup the specified ML environment. While there is a fact that even using the same model,
+                            if the enviroment is diffrenet, the ML result would be different as well. Developers need
+                            to config the environment repeatly to make the result better. Once they want to use the
+                            model in another environment, they need to config it again. There is no way to describ the
+                            environment.
+                        </p>
+                        <p>
+                            We now provide you a way to describ ML environment following a metadata description
+                            standard. With this standard, developers can create a environment description file easily.
+                            Then MOO can reproduce the same ML environment for developers using the file quickly and
+                            esaily. Please follow the <a href="guide.html" class="text-primary">guide</a> to learn more
+                            abort the ML metadata standard.
+                        </p>
+                        <p>
+                            MOO which is based on <a href="https://openlabtesting.org/" class="text-primary">OpenLab</a>
+                            aims to reproduce ML environment following the metadata description standard mentioned
+                            above. The workflow is described by the picture below.
+                        </p>
+                        <p>
+                            MOO is still under development. In the futrue, we'll provide a tool for generating the
+                            metadata file automaticlly as well.
+                        </p>
+                        <p>
+                            Enjoy yourself!
                         </p>
                         <p>
                             <a class="btn btn-primary btn-large" href="workflow.html">Reproduce now</a>
                         </p>
                     </div>
                 </div>
-                <div class="col-2"></div>
             </div>
         </div>
     </body>
