@@ -23,22 +23,29 @@
             var content
             var is_remote = true
             var is_cpu = true
+            var need_sleep = false
         </script>
         <script type="text/javascript">
             function onClick() {
                 log_text = document.getElementById("process")
                 log_text.value = ""
                 var job_name = 'moo-job-' + Math.random().toString(36).substring(7)
+                if (need_sleep) {
+                    file_name = job_name + '_sleep'
+                }
+                else {
+                    file_name = job_name
+                }
                 if (is_remote) {
                     url_text = document.getElementById("url_text")
-                    file_name = job_name + '.txt'
+                    file_name += '.txt'
                     if (!url_text.value.endsWith("zip")) {
                         alert("Please specify a zip file address instead.")
                         return
                     }
                     content = btoa(url_text.value)
                 } else {
-                    file_name = job_name + '.zip'
+                    file_name += '.zip'
                 }
                 document.getElementById('submit_button').setAttribute('disabled', 'disabled')
                 var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
@@ -128,6 +135,15 @@
                 }
                 document.getElementById('submit_button').removeAttribute('disabled')
             }
+            
+            function sleep_checkbox(checked) {
+                if (checked) {
+                    need_sleep = true
+                }
+                else {
+                    need_sleep = false
+                }
+            }
         </script>
 
         <div class="container-fluid">
@@ -185,6 +201,11 @@
                                 <option value="CPU">CPU</option>
                                 <option value="GPU">GPU</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" style="background-color: #8FD19E;">
+                            <input type="checkbox" id="is_sleep" onchange="sleep_checkbox(this.checked)"> Need to login ML environment or not
                         </div>
                     </div>
                     <div class="card">
