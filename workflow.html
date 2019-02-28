@@ -76,7 +76,7 @@
                                                             "Done\nFetching environment info(" +
                                                             times + ")..."
                                                         pr_commit_id = body.head.sha
-                                                        var worker = new Worker("fetch_env_info.js")
+                                                        var worker = new Worker("js/fetch_env_info.js")
                                                         worker.postMessage(pr_commit_id)
                                                         worker.onmessage = function(event) {
                                                             ip = event.data[0]
