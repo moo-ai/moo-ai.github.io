@@ -7,10 +7,19 @@
 
         <title>MOO-Status</title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
+
         <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
     </head>
     <body>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var status_table = document.getElementById('status_table')
+                row = status_table.insertRow(-1)
+                cell1 = row.insertCell(0)
+                cell1.innerHTML = "test"
+            });
+        </script>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12" style="font-family: Arial;">
@@ -36,7 +45,7 @@
                 <div class="col-12" style="font-family: Arial;">
                     <div class="row">
                         <div class="col-12">
-                            <table class="table">
+                            <table class="table" id="status_table">
                                 <thead>
                                     <tr>
                                         <th>

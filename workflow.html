@@ -22,16 +22,24 @@
             var file_name
             var content
             var is_remote = true
+            var is_cpu = true
         </script>
         <script type="text/javascript">
             function onClick() {
                 document.getElementById('submit_button').setAttribute('disabled', 'disabled')
                 log_text = document.getElementById("process")
                 log_text.value = ""
+                file_name = 'moo-job-' + Math.random().toString(36).substring(7)
                 if (is_remote) {
                     url_text = document.getElementById("url_text")
-                    file_name = 'url.txt'
+                    file_name += '.txt'
+                    if (!url_text.value.endsWith("zip")) {
+                        alert("Please specify a zip file address instead.")
+                        return
+                    }
                     content = btoa(url_text.value)
+                } else {
+                    file_name += '.zip'
                 }
                 var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
                 // fetch the repo
@@ -48,18 +56,23 @@
                             })
                             .then(function() {
                                 log_text.value += "Done\nUploading..."
+                                if (is_cpu) {
+                                    file_path = "user_data/" + file_name
+                                } else {
+                                    file_path = "user_data_gpu/" + file_name
+                                }
                                 let config = {
                                     message: 'test-for-ai-commit-for-create-new-file',
                                     content: content,
                                     branch: new_branch_name,
-                                    path: "user_data/" + file_name
+                                    path: file_path
                                 }
                                 // upload file
-                                repo.contents("user_data/" + file_name).add(config)
+                                repo.contents(file_path).add(config)
                                     .then(function() {
                                         let pr_conf = {
                                             title: new_branch_name + " AI CI Job",
-                                            body: "So hard to implement by JS.",
+                                            body: "Reproduce ML environment via OpenLab",
                                             base: "master",
                                             head: "moo-ai:" + new_branch_name
                                         }
@@ -76,7 +89,8 @@
                                                             "Done\nFetching environment info(" +
                                                             times + ")..."
                                                         pr_commit_id = body.head.sha
-                                                        var worker = new Worker("js/fetch_env_info.js")
+                                                        var worker = new Worker(
+                                                            "js/fetch_env_info.js")
                                                         worker.postMessage(pr_commit_id)
                                                         worker.onmessage = function(event) {
                                                             ip = event.data[0]
@@ -114,30 +128,31 @@
             function read_input_file(files) {
                 var file = files[0]
                 var file_reader = new FileReader()
-                file_name = file.name
                 file_reader.readAsBinaryString(file)
                 file_reader.onload = function() {
-                    if (!file_name.endsWith("zip")) {
+                    if (!file.name.endsWith("zip")) {
                         alert("Please specify a zip file instead.")
                     } else {
                         content = btoa(file_reader.result)
-                        document.getElementById('submit_button').removeAttribute('disabled')
                     }
                 }
             }
 
-            function read_url(value) {
-                document.getElementById('submit_button').removeAttribute('disabled')
-            }
-
-            function chose_url_way() {
+            function choose_url_way() {
                 is_remote = true
-                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
             }
 
-            function chose_file_way() {
+            function choose_file_way() {
                 is_remote = false
-                document.getElementById('submit_button').setAttribute('disabled', 'disabled')
+            }
+
+            function select_hardware(value) {
+                if (value === "CPU") {
+                    is_cpu = true
+                } else {
+                    is_cpu = false
+                }
+                document.getElementById('submit_button').removeAttribute('disabled')
             }
         </script>
 
@@ -165,22 +180,22 @@
             <div class="row">
                 <div class="col-12" style="font-family: Arial;">
                     <div class="card">
-                        <div class="card-header" style="background-color: #8FCAFE;">First, chose a way to refer your ML
+                        <div class="card-header" style="background-color: #8FCAFE;">Chose the way referring your ML
                             data</div>
                         <div class="card-body">
                             <nav>
                                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                     <a class="nav-item nav-link active" id="nav-remote-tab" data-toggle="tab" href="#nav-remote"
-                                        role="tab" aria-controls="nav-home" aria-selected="true" onclick="chose_url_way()">Remote
+                                        role="tab" aria-controls="nav-home" aria-selected="true" onclick="choose_url_way()">Remote
                                         File</a>
                                     <a class="nav-item nav-link" id="nav-local-tab" data-toggle="tab" href="#nav-local"
-                                        role="tab" aria-controls="nav-profile" aria-selected="false" onclick="chose_file_way()">Local
+                                        role="tab" aria-controls="nav-profile" aria-selected="false" onclick="choose_file_way()">Local
                                         File</a>
                                 </div>
                             </nav>
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade show active" id="nav-remote" role="tabpanel" aria-labelledby="nav-home-tab">
-                                    <input name="" type="text" class="form-control" id="url_text" onfocus="read_url(this.value)" />
+                                    <input name="" type="text" class="form-control" id="url_text" />
                                 </div>
                                 <div class="tab-pane fade" id="nav-local" role="tabpanel" aria-labelledby="nav-profile-tab">
                                     <input type="file" name="file" id="file" onchange="read_input_file(this.files)" />
@@ -189,7 +204,17 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header" style="background-color: #8FCAFE;">Then, click submit, we'll reproduce
+                        <div class="card-header" style="background-color: #8FCAFE;">Choose hardware type</div>
+                        <div class="card-body">
+                            <select id="hardware_type" class="custom-select" onchange="select_hardware(this.options[this.options.selectedIndex].value)">
+                                <option style='display: none'></option>
+                                <option value="CPU">CPU</option>
+                                <option value="GPU">GPU</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" style="background-color: #8FCAFE;">Click submit, we'll reproduce
                             the ML environment for you</div>
                         <div class="card-body">
                             <button type="button" class="btn btn-primary" onclick="onClick()" disabled="disabled" id="submit_button">Submit!</button>
