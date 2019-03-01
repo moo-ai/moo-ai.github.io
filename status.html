@@ -17,11 +17,12 @@
                 password: 'jingyibb1314~',
             })
             const repo = octo.repos('moo-ai', 'moo-ai.github.io')
+            var task_data = repo.contents('env_info/task_list.json').read()
         </script>
         <script type="text/javascript">
             $(document).ready(function() {
-                date = repo.contents('env_info/').fetch().then((info) => {
-                    console.log(info.sha, info.content)
+                repo.contents('env_info/task_list.json').read().then(function(result) {
+                    parsed_data = JSON.parse(result)
                 })
                 var status_table = document.getElementById('status_table')
                 row = status_table.insertRow(-1)
