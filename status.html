@@ -29,47 +29,52 @@
                         row_data = parsed_data[key]
 
                         var row = status_table.insertRow(-1)
-                        var job_name_cell = row.insertCell(0)
-                        var credential_cell = row.insertCell(1)
-                        var ip_cell = row.insertCell(2)
-                        var result_cell = row.insertCell(3)
-                        var endpoint_cell = row.insertCell(4)
-                        var status_cell = row.insertCell(5)
+                        var id_cell = row.insertCell(0)
+                        var job_name_cell = row.insertCell(1)
+                        var credential_cell = row.insertCell(2)
+                        var ip_cell = row.insertCell(3)
+                        var result_cell = row.insertCell(4)
+                        var endpoint_cell = row.insertCell(5)
+                        var status_cell = row.insertCell(6)
 
+                        id_cell.innerHTML = row_data["patch_set"]
                         job_name_cell.innerHTML = key
                         credential_cell.innerHTML = row_data["credential"]
                         ip_cell.innerHTML = row_data["ip"]
                         result_cell.innerHTML = row_data["result_url"]
                         endpoint_cell.innerHTML = row_data["endpoint"]
-                    }
-                }).then(function () {
-                    i=1
-                    while (i < status_table.rows.length) {
-                        var job_name = status_table.rows[i].cells[0].innerText
-                        var patch_set = parsed_data[job_name]['patch_set']
-                        var zuul_request = new XMLHttpRequest()
+                        patch_set = row_data["patch_set"]
+
+                        let zuul_request = new XMLHttpRequest()
+                        zuul_request.open('GET', zuul_host +
+                            'api/buildsets?project=moo-ai/moo-ai.github.io&patchset=' + row_data[
+                                "patch_set"])
                         zuul_request.onreadystatechange = function() {
-                            if (zuul_request.readyState === 4) {
-                                if (zuul_request.status === 200) {
-                                    zuul_data = zuul_request.responseText
-                                    parsed_zuul_data = JSON.parse(zuul_data)
-                                    if (parsed_zuul_data.length != 0) {
-                                        status_table.rows[i].cells[5].innerHTML = parsed_zuul_data[0]['result']
+                            if (zuul_request.readyState === XMLHttpRequest.DONE && zuul_request.status ===
+                                200) {
+                                zuul_data = zuul_request.responseText
+                                parsed_zuul_data = JSON.parse(zuul_data)
+                                if (parsed_zuul_data.length != 0) {
+                                    var i = 1
+                                    while (i < status_table.rows.length) {
+                                        if (status_table.rows[i].cells[0].innerHTML ===
+                                            zuul_request.responseURL.split("patchset=")[1]) {
+                                            status_table.rows[i].cells[6].innerHTML =
+                                                parsed_zuul_data[0]['result']
+                                            break
+                                        }
+                                        i++
                                     }
                                 }
-
                             }
                         }
-                        zuul_request.open('GET', zuul_host + 'api/buildsets?project=moo-ai/moo-ai.github.io&patchset=' + patch_set, false)
-                        zuul_request.send()                        
-                        i++
+                        zuul_request.send()
                     }
-
                 })
             })
         </script>
         <script>
-            
+
         </script>
         <div class="container-fluid">
             <div class="row">
@@ -99,6 +104,9 @@
                             <table class="table" id="status_table">
                                 <thead>
                                     <tr>
+                                        <th>
+                                            ID
+                                        </th>
                                         <th>
                                             Job Name
                                         </th>
