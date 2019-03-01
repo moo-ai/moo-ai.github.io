@@ -1,0 +1,16 @@
+{
+    "moo-ai-123456": {
+        "patchset": "e3f3eccc9d98d90609e2864769620c37db87ee7d"
+        "ip": "['192.168.200.141']",
+        "credentail": "demo/demo",
+        "result_url": "http://80.158.7.210/logs/192/192/e3f3eccc9d98d90609e2864769620c37db87ee7d/check/ai-on-openlab-test-vm-env-keeping/c2639a1/test_results/",
+        "endpoint": ""
+    },
+    "moo-ai-456789": {
+        "patchset": "e1e0efbb395a77cadc6fdf0e961ced01dbbe21b8"
+        "ip": "['192.168.200.142']",
+        "credentail": "demo/demo",
+        "result_url": "http://80.158.7.210/logs/192/192/e1e0efbb395a77cadc6fdf0e961ced01dbbe21b8/check/ai-on-openlab-test-vm-env-keeping/c2639a1/test_results/",
+        "endpoint": ""
+    }
+}
