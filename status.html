@@ -41,7 +41,7 @@
                         job_name_cell.innerHTML = key
                         credential_cell.innerHTML = row_data["credential"]
                         ip_cell.innerHTML = row_data["ip"]
-                        result_cell.innerHTML = row_data["result_url"]
+                        result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" + row_data["result_url"] +"</a>"
                         endpoint_cell.innerHTML = row_data["endpoint"]
                         patch_set = row_data["patch_set"]
 
