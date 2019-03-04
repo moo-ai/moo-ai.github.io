@@ -41,8 +41,13 @@
                         job_name_cell.innerHTML = key
                         credential_cell.innerHTML = row_data["credential"]
                         ip_cell.innerHTML = row_data["ip"]
-                        result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" + row_data[
-                            "result_url"] + "</a>"
+                        if (row_data["result_url"] === '') {
+                            result_cell.innerHTML = " Please login the ML environment instead!"
+                        }
+                        else {
+                            result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" + row_data[
+                                "result_url"] + "</a>"
+                        }
                         endpoint_cell.innerHTML = row_data["endpoint"]
                         status_cell.innerHTML =
                             "<div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div>"
@@ -61,11 +66,15 @@
                                     if (status_table.rows[i].cells[0].innerHTML ===
                                         zuul_request.responseURL.split("patchset=")[1]) {
                                         if (parsed_zuul_data.length != 0) {
-                                            status_table.rows[i].cells[6].innerHTML =
-                                                parsed_zuul_data[0]['result']
+                                            if (parsed_zuul_data[0]['result'] === "SUCCESS") {
+                                                status_table.rows[i].cells[6].innerHTML = "<p class='text-success'>SUCCESS</p>"
+                                            }
+                                            else {
+                                                status_table.rows[i].cells[6].innerHTML = "<p class='text-danger'>" + parsed_zuul_data[0]['result'] + "</p>"
+                                            }
                                         }
                                         else {
-                                            status_table.rows[i].cells[6].innerHTML = "N/A"
+                                            status_table.rows[i].cells[6].innerHTML = "<p class='text-primary'>RUNNING</p>"
                                         }
                                         break
                                     }
