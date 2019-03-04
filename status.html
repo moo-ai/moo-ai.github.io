@@ -41,10 +41,12 @@
                         job_name_cell.innerHTML = key
                         credential_cell.innerHTML = row_data["credential"]
                         ip_cell.innerHTML = row_data["ip"]
-                        result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" + row_data["result_url"] +"</a>"
+                        result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" + row_data[
+                            "result_url"] + "</a>"
                         endpoint_cell.innerHTML = row_data["endpoint"]
+                        status_cell.innerHTML =
+                            "<div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div>"
                         patch_set = row_data["patch_set"]
-
                         let zuul_request = new XMLHttpRequest()
                         zuul_request.open('GET', zuul_host +
                             'api/buildsets?project=moo-ai/moo-ai.github.io&patchset=' + row_data[
@@ -54,22 +56,27 @@
                                 200) {
                                 zuul_data = zuul_request.responseText
                                 parsed_zuul_data = JSON.parse(zuul_data)
-                                if (parsed_zuul_data.length != 0) {
-                                    var i = 1
-                                    while (i < status_table.rows.length) {
-                                        if (status_table.rows[i].cells[0].innerHTML ===
-                                            zuul_request.responseURL.split("patchset=")[1]) {
+                                var i = 1
+                                while (i < status_table.rows.length) {
+                                    if (status_table.rows[i].cells[0].innerHTML ===
+                                        zuul_request.responseURL.split("patchset=")[1]) {
+                                        if (parsed_zuul_data.length != 0) {
                                             status_table.rows[i].cells[6].innerHTML =
                                                 parsed_zuul_data[0]['result']
-                                            break
                                         }
-                                        i++
+                                        else {
+                                            status_table.rows[i].cells[6].innerHTML = "N/A"
+                                        }
+                                        break
                                     }
+                                    i++
                                 }
+
                             }
                         }
                         zuul_request.send()
                     }
+                    $("div#loading_icon").remove()
                 })
             })
         </script>
@@ -129,6 +136,9 @@
                                 </thead>
                             </table>
                         </div>
+                    </div>
+                    <div id="loading_icon" class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
             </div>
