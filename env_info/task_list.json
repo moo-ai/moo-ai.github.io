@@ -27,6 +27,13 @@
         "patch_set": "3a4e40a6cc128944a3a72d31da7a4f89b1b361cb",
         "result_url": ""
     },
+    "moo-job-5rkmbl": {
+        "credential": "demo/demo",
+        "endpoint": "192.168.200.27:8500",
+        "ip": "192.168.200.27",
+        "patch_set": "de6bbeede712c6a246a8365df46f5613cad808c0",
+        "result_url": "http://80.158.7.210/logs/04/204/de6bbeede712c6a246a8365df46f5613cad808c0/check/ai-on-openlab-test-vm/143b906/test_results/"
+    },
     "moo-job-bm3717": {
         "credential": "demo/demo",
         "endpoint": "",
