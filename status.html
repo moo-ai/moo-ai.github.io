@@ -43,12 +43,16 @@
                         ip_cell.innerHTML = row_data["ip"]
                         if (row_data["result_url"] === '') {
                             result_cell.innerHTML = " Please login the ML environment instead!"
+                        } else {
+                            result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" +
+                                "<u>Link</u></a>"
+                        }
+                        if (row_data['endpoint'] != '') {
+                            endpoint_cell.innerHTML = "<a href='inference.html?endpoint=" + row_data["endpoint"] + "' class='btn btn-primary'>Go</a>"
                         }
                         else {
-                            result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" + row_data[
-                                "result_url"] + "</a>"
+                            endpoint_cell.innerHTML = 'N/A'
                         }
-                        endpoint_cell.innerHTML = row_data["endpoint"]
                         status_cell.innerHTML =
                             "<div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div>"
                         patch_set = row_data["patch_set"]
@@ -67,14 +71,16 @@
                                         zuul_request.responseURL.split("patchset=")[1]) {
                                         if (parsed_zuul_data.length != 0) {
                                             if (parsed_zuul_data[0]['result'] === "SUCCESS") {
-                                                status_table.rows[i].cells[6].innerHTML = "<p class='text-success'>SUCCESS</p>"
+                                                status_table.rows[i].cells[6].innerHTML =
+                                                    "<p class='text-success'>SUCCESS</p>"
+                                            } else {
+                                                status_table.rows[i].cells[6].innerHTML =
+                                                    "<p class='text-danger'>" + parsed_zuul_data[0]
+                                                    ['result'] + "</p>"
                                             }
-                                            else {
-                                                status_table.rows[i].cells[6].innerHTML = "<p class='text-danger'>" + parsed_zuul_data[0]['result'] + "</p>"
-                                            }
-                                        }
-                                        else {
-                                            status_table.rows[i].cells[6].innerHTML = "<p class='text-primary'>RUNNING</p>"
+                                        } else {
+                                            status_table.rows[i].cells[6].innerHTML =
+                                                "<p class='text-primary'>RUNNING</p>"
                                         }
                                         break
                                     }
@@ -98,16 +104,19 @@
                     <nav class="navbar navbar-expand bg-primary navbar-dark">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link" href="index.html">Home</a>
+                                <a class="nav-link" href="index.html"><b>Home</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="workflow.html">WorkFlow</a>
+                                <a class="nav-link" href="workflow.html"><b>WorkFlow</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="#">Status</a>
+                                <a class="nav-link active" href="#"><b>Status</b></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="guide.html">Guide</a>
+                                <a class="nav-link" href="inference.html"><b>Inference</b></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="guide.html"><b>Guide</b></a>
                             </li>
                         </ul>
                     </nav>
@@ -136,7 +145,7 @@
                                             ML Result Link
                                         </th>
                                         <th>
-                                            Inference Endpoint
+                                            Inference
                                         </th>
                                         <th>
                                             Status
