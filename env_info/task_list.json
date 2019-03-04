@@ -13,6 +13,13 @@
         "patch_set": "e1e0efbb395a77cadc6fdf0e961ced01dbbe21b8",
         "result_url": "http://80.158.7.210/logs/192/192/e1e0efbb395a77cadc6fdf0e961ced01dbbe21b8/check/ai-on-openlab-test-vm-env-keeping/c2639a1/test_results/"
     },
+    "moo-job-2egbhc_sleep": {
+        "credential": "demo/demo",
+        "endpoint": "",
+        "ip": "192.168.200.65",
+        "patch_set": "b3a2830ce47b44f03abe333a0250f102e30f37ad",
+        "result_url": ""
+    },
     "moo-job-4y4uh_sleep": {
         "credential": "demo/demo",
         "endpoint": "",
