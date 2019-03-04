@@ -41,6 +41,13 @@
         "patch_set": "accb144d6a3da88eee559f1765d4af62c3039f61",
         "result_url": "http://80.158.7.210/logs/05/205/accb144d6a3da88eee559f1765d4af62c3039f61/check/ai-on-openlab-test-vm/45a42d6/test_results/"
     },
+    "moo-job-ahx4v9": {
+        "credential": "demo/demo",
+        "endpoint": "",
+        "ip": "192.168.200.242",
+        "patch_set": "cb5f616459699566a305f761c9a1cce70c1fea50",
+        "result_url": "http://80.158.7.210/logs/07/207/cb5f616459699566a305f761c9a1cce70c1fea50/check/ai-on-openlab-test-vm/05ad361/test_results/"
+    },
     "moo-job-ar1ppl": {
         "credential": "demo/demo",
         "endpoint": "",
