@@ -98,17 +98,16 @@
             const NUM_TRAIN_ELEMENTS = 55000;
             const NUM_TEST_ELEMENTS = NUM_DATASET_ELEMENTS - NUM_TRAIN_ELEMENTS;
 
-            const MNIST_IMAGES_SPRITE_PATH =
-                'https://storage.googleapis.com/learnjs-data/model-builder/mnist_images.png';
+            const MNIST_IMAGES_SPRITE_PATH = 'mnist_images.png';
             const MNIST_LABELS_PATH =
                 'https://storage.googleapis.com/learnjs-data/model-builder/mnist_labels_uint8';
-            load().then(function () {
+            load().then(function() {
                 const examples = getTestData(100)
-                const model = tf.loadLayersModel('replace.me')
-                const output = model.predict(examples.xs);
-                console.log(output)
+                tf.loadLayersModel('replace.me').then(function(model) {
+                    const output = model.predict(examples.xs);
+                    console.log(output)
+                })
             })
-
         </script>
         <div class="container-fluid">
             <div class="row">
