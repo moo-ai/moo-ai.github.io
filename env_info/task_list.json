@@ -118,6 +118,13 @@
         "patch_set": "d7e85c955c08997eee33767450b768dd278b2c45",
         "result_url": ""
     },
+    "moo-job-vmaix9": {
+        "credential": "demo/demo",
+        "endpoint": "192.168.200.175:8500",
+        "ip": "192.168.200.175",
+        "patch_set": "5e654bb51d018baf39bff873d9a329e9002e6bd7",
+        "result_url": ""
+    },
     "moo-job-ypm81_sleep": {
         "credential": "demo/demo",
         "endpoint": "",
