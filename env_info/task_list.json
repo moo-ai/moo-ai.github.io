@@ -1,18 +1,4 @@
 {
-    "moo-job-6cu12": {
-        "credential": "demo/demo",
-        "endpoint": "",
-        "ip": "192.168.200.93",
-        "patch_set": "405ca493aa232858f136d365acc73c177284e0a4",
-        "result_url": "http://80.158.7.210/logs/25/225/405ca493aa232858f136d365acc73c177284e0a4/check/ai-on-openlab-test-vm/94094ad/test_results/"
-    },
-    "moo-job-f47lp": {
-        "credential": "demo/demo",
-        "endpoint": "",
-        "ip": "192.168.200.74",
-        "patch_set": "9e181dbe8895ec9df7deb9b1c0194004ae5341e1",
-        "result_url": "http://80.158.7.210/logs/21/221/9e181dbe8895ec9df7deb9b1c0194004ae5341e1/check/ai-on-openlab-test-vm/9b91ebc/test_results/"
-    },
     "moo-job-fqtvr5": {
         "credential": "demo/demo",
         "endpoint": "",
@@ -20,74 +6,11 @@
         "patch_set": "f82a3450b8d2762183b1569c517343df91176d63",
         "result_url": "http://80.158.7.210/logs/26/226/f82a3450b8d2762183b1569c517343df91176d63/check/ai-on-openlab-test-vm-with-gpu/e1ae2a9/test_results/"
     },
-    "moo-job-gqgtlf": {
-        "credential": "demo/demo",
-        "endpoint": "192.168.200.181:8500",
-        "ip": "192.168.200.181",
-        "patch_set": "528ae2f7859125365e2495dab1ee20729ab299b6",
-        "result_url": ""
-    },
-    "moo-job-iv0hap": {
-        "credential": "demo/demo",
-        "endpoint": "192.168.200.89:8500",
-        "ip": "192.168.200.89",
-        "patch_set": "fcb6a418b3e787db4d49d45e9434eb4fce8d0138",
-        "result_url": ""
-    },
-    "moo-job-jli0w5": {
-        "credential": "demo/demo",
-        "endpoint": "",
-        "ip": "192.168.200.137",
-        "patch_set": "5aef10183849a1b6b4f347cc0909a2e8b5fba1c1",
-        "result_url": "http://80.158.7.210/logs/12/212/5aef10183849a1b6b4f347cc0909a2e8b5fba1c1/check/ai-on-openlab-test-vm-with-gpu/5dd995f/test_results/"
-    },
-    "moo-job-k4al4": {
-        "credential": "demo/demo",
-        "endpoint": "",
-        "ip": "['192.168.200.99']",
-        "patch_set": "7e57459a2fd70f1f7902cfe1783fcb2ec8600acf",
-        "result_url": "http://80.158.7.210/logs/00/200/7e57459a2fd70f1f7902cfe1783fcb2ec8600acf/check/ai-on-openlab-test-vm-with-gpu/088a3e4/test_results/"
-    },
-    "moo-job-lx8xx6": {
-        "credential": "demo/demo",
-        "endpoint": "",
-        "ip": "192.168.200.98",
-        "patch_set": "1de0181cfc43ccd7deb76784e402584e7532f6ab",
-        "result_url": "http://80.158.7.210/logs/14/214/1de0181cfc43ccd7deb76784e402584e7532f6ab/check/ai-on-openlab-test-vm/e0b4395/test_results/"
-    },
-    "moo-job-o0i8d1": {
-        "credential": "demo/demo",
-        "endpoint": "",
-        "ip": "['192.168.200.28']",
-        "patch_set": "2c268e398a6df3ec16ca2c350bf6328ad6077e99",
-        "result_url": "http://80.158.7.210/logs/198/198/2c268e398a6df3ec16ca2c350bf6328ad6077e99/check/ai-on-openlab-test-vm/0bc9eac/test_results/"
-    },
-    "moo-job-uv9pk": {
-        "credential": "demo/demo",
-        "endpoint": "192.168.200.250:8500",
-        "ip": "192.168.200.250",
-        "patch_set": "d7e85c955c08997eee33767450b768dd278b2c45",
-        "result_url": ""
-    },
     "moo-job-vdg2q": {
         "credential": "demo/demo",
         "endpoint": "192.168.200.213:8500",
         "ip": "80.158.7.210:60257",
         "patch_set": "20da0fc8c09e125a38e2a9ce1502eef657cd71d3",
-        "result_url": ""
-    },
-    "moo-job-vmaix9": {
-        "credential": "demo/demo",
-        "endpoint": "192.168.200.175:8500",
-        "ip": "192.168.200.175",
-        "patch_set": "5e654bb51d018baf39bff873d9a329e9002e6bd7",
-        "result_url": ""
-    },
-    "moo-job-ypm81_sleep": {
-        "credential": "demo/demo",
-        "endpoint": "",
-        "ip": "['192.168.200.182']",
-        "patch_set": "acacd37aefaadb89d18746d79aeb762a5a74aab9",
         "result_url": ""
     }
 }
