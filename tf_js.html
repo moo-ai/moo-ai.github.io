@@ -13,7 +13,7 @@
     <body>
         <script type="text/javascript">
             function load_model() {
-                const model = tf.loadLayersModel('http://')
+                const model = tf.loadLayersModel('replace.me')
                 const example = tf.browser.fromPixels();
                 model.predict(example)
             }
