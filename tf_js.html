@@ -12,13 +12,122 @@
     </head>
     <body>
         <script type="text/javascript">
-            function load_model() {
-                const model = tf.loadLayersModel('replace.me')
-                const example = tf.browser.fromPixels();
-                model.predict(example)
+            async function load() {
+                // Make a request for the MNIST sprited image.
+                const img = new Image();
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const imgRequest = new Promise((resolve, reject) => {
+                    img.crossOrigin = '';
+                    img.onload = () => {
+                        img.width = img.naturalWidth;
+                        img.height = img.naturalHeight;
+
+                        const datasetBytesBuffer =
+                            new ArrayBuffer(NUM_DATASET_ELEMENTS * IMAGE_SIZE * 4);
+
+                        const chunkSize = 5000;
+                        canvas.width = img.width;
+                        canvas.height = chunkSize;
+
+                        for (let i = 0; i < NUM_DATASET_ELEMENTS / chunkSize; i++) {
+                            const datasetBytesView = new Float32Array(
+                                datasetBytesBuffer, i * IMAGE_SIZE * chunkSize * 4,
+                                IMAGE_SIZE * chunkSize);
+                            ctx.drawImage(
+                                img, 0, i * chunkSize, img.width, chunkSize, 0, 0, img.width,
+                                chunkSize);
+
+                            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+                            for (let j = 0; j < imageData.data.length / 4; j++) {
+                                // All channels hold an equal value since the image is grayscale, so
+                                // just read the red channel.
+                                datasetBytesView[j] = imageData.data[j * 4] / 255;
+                            }
+                        }
+                        datasetImages = new Float32Array(datasetBytesBuffer);
+
+                        resolve();
+                    };
+                    img.src = MNIST_IMAGES_SPRITE_PATH;
+                });
+
+                const labelsRequest = fetch(MNIST_LABELS_PATH);
+                const [imgResponse, labelsResponse] =
+                await Promise.all([imgRequest, labelsRequest]);
+
+                datasetLabels = new Uint8Array(await labelsResponse.arrayBuffer());
+
+                // Slice the the images and labels into train and test sets.
+                trainImages =
+                    datasetImages.slice(0, IMAGE_SIZE * NUM_TRAIN_ELEMENTS);
+                testImages = datasetImages.slice(IMAGE_SIZE * NUM_TRAIN_ELEMENTS);
+                trainLabels =
+                    datasetLabels.slice(0, NUM_CLASSES * NUM_TRAIN_ELEMENTS);
+                testLabels =
+                    datasetLabels.slice(NUM_CLASSES * NUM_TRAIN_ELEMENTS);
+            }
+
+            function getTestData(numExamples) {
+                let xs = tf.tensor4d(
+                    testImages,
+                    [testImages.length / IMAGE_SIZE, IMAGE_H, IMAGE_W, 1]);
+                let labels = tf.tensor2d(
+                    testLabels, [testLabels.length / NUM_CLASSES, NUM_CLASSES]);
+
+                if (numExamples != null) {
+                    xs = xs.slice([0, 0, 0, 0], [numExamples, IMAGE_H, IMAGE_W, 1]);
+                    labels = labels.slice([0, 0], [numExamples, NUM_CLASSES]);
+                }
+                return {
+                    xs,
+                    labels
+                };
             }
         </script>
-        <input type="file" id="json-upload"/>
-        <button onclick="load_model()">load_model</button>
+        <script type="text/javascript">
+            var testImages
+            var testLabels
+            const IMAGE_H = 28;
+            const IMAGE_W = 28;
+            const IMAGE_SIZE = IMAGE_H * IMAGE_W;
+            const NUM_CLASSES = 10;
+            const NUM_DATASET_ELEMENTS = 65000;
+
+            const NUM_TRAIN_ELEMENTS = 55000;
+            const NUM_TEST_ELEMENTS = NUM_DATASET_ELEMENTS - NUM_TRAIN_ELEMENTS;
+
+            const MNIST_IMAGES_SPRITE_PATH =
+                'https://storage.googleapis.com/learnjs-data/model-builder/mnist_images.png';
+            const MNIST_LABELS_PATH =
+                'https://storage.googleapis.com/learnjs-data/model-builder/mnist_labels_uint8';
+            load().then(function () {
+                const examples = getTestData(100)
+                const model = tf.loadLayersModel('replace.me')
+                const output = model.predict(examples.xs);
+                console.log(output)
+            })
+
+        </script>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12" style="font-family: Arial;">
+                    <div class="card">
+                        <div class="card-header" style="background-color: #8FCAFE;"><b>Upload a picture for predict</b></div>
+                        <div class="card-body">
+                            <input type="file" />
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" style="background-color: #8FCAFE;"><b>Result</b></div>
+                        <div class="card-body">
+                            <textarea style="font-size:16px;resize:none;" class="form-control" rows=5 readonly="readonly"
+                                disabled="disabled" id="process" placeholder="Progress Log will be printed here."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
