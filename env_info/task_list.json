@@ -2,9 +2,9 @@
     "moo-job-6cu12": {
         "credential": "demo/demo",
         "endpoint": "",
-        "ip": "192.168.200.93",
+        "ip": "80.158.7.210:60436",
         "patch_set": "405ca493aa232858f136d365acc73c177284e0a4",
-        "result_url": "http://80.158.7.210/logs/25/225/405ca493aa232858f136d365acc73c177284e0a4/check/ai-on-openlab-test-vm/94094ad/test_results/"
+        "result_url": "http://80.158.7.210/logs/25/225/405ca493aa232858f136d365acc73c177284e0a4/check/ai-on-openlab-test-vm/7ccccb8/test_results/"
     },
     "moo-job-f47lp": {
         "credential": "demo/demo",
