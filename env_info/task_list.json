@@ -72,9 +72,9 @@
     "moo-job-f47lp": {
         "credential": "demo/demo",
         "endpoint": "",
-        "ip": "192.168.200.78",
+        "ip": "192.168.200.53",
         "patch_set": "9e181dbe8895ec9df7deb9b1c0194004ae5341e1",
-        "result_url": "http://80.158.7.210/logs/21/221/9e181dbe8895ec9df7deb9b1c0194004ae5341e1/check/ai-on-openlab-test-vm/6198a90/test_results/"
+        "result_url": "http://80.158.7.210/logs/21/221/9e181dbe8895ec9df7deb9b1c0194004ae5341e1/check/ai-on-openlab-test-vm/d6cb68f/test_results/"
     },
     "moo-job-gqgtlf": {
         "credential": "demo/demo",
