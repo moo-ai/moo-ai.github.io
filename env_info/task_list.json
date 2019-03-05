@@ -19,5 +19,12 @@
         "ip": "80.158.7.210:60257",
         "patch_set": "20da0fc8c09e125a38e2a9ce1502eef657cd71d3",
         "result_url": ""
+    },
+    "moo-job-w8732v": {
+        "credential": "demo/demo",
+        "endpoint": "",
+        "ip": "80.158.7.210:60098",
+        "patch_set": "8fb21d9febe9b8d44a998d23b8ee3a8bbaa63ba5",
+        "result_url": "http://80.158.7.210/logs/29/229/8fb21d9febe9b8d44a998d23b8ee3a8bbaa63ba5/check/ai-on-openlab-test-vm/4fa8491/test_results/"
     }
 }
