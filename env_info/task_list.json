@@ -90,6 +90,13 @@
         "patch_set": "2c268e398a6df3ec16ca2c350bf6328ad6077e99",
         "result_url": "http://80.158.7.210/logs/198/198/2c268e398a6df3ec16ca2c350bf6328ad6077e99/check/ai-on-openlab-test-vm/0bc9eac/test_results/"
     },
+    "moo-job-uv9pk": {
+        "credential": "demo/demo",
+        "endpoint": "192.168.200.250:8500",
+        "ip": "192.168.200.250",
+        "patch_set": "d7e85c955c08997eee33767450b768dd278b2c45",
+        "result_url": ""
+    },
     "moo-job-ypm81_sleep": {
         "credential": "demo/demo",
         "endpoint": "",
