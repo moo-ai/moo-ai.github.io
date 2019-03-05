@@ -48,6 +48,13 @@
         "patch_set": "accb144d6a3da88eee559f1765d4af62c3039f61",
         "result_url": "http://80.158.7.210/logs/05/205/accb144d6a3da88eee559f1765d4af62c3039f61/check/ai-on-openlab-test-vm/45a42d6/test_results/"
     },
+    "moo-job-9cjav": {
+        "credential": "demo/demo",
+        "endpoint": "192.168.200.103:8500",
+        "ip": "192.168.200.103",
+        "patch_set": "260c8742c78b88c85784e7cbe9277259527d5d4e",
+        "result_url": ""
+    },
     "moo-job-ahx4v9": {
         "credential": "demo/demo",
         "endpoint": "",
@@ -72,9 +79,9 @@
     "moo-job-f47lp": {
         "credential": "demo/demo",
         "endpoint": "",
-        "ip": "192.168.200.53",
+        "ip": "192.168.200.78",
         "patch_set": "9e181dbe8895ec9df7deb9b1c0194004ae5341e1",
-        "result_url": "http://80.158.7.210/logs/21/221/9e181dbe8895ec9df7deb9b1c0194004ae5341e1/check/ai-on-openlab-test-vm/d6cb68f/test_results/"
+        "result_url": "http://80.158.7.210/logs/21/221/9e181dbe8895ec9df7deb9b1c0194004ae5341e1/check/ai-on-openlab-test-vm/6198a90/test_results/"
     },
     "moo-job-gqgtlf": {
         "credential": "demo/demo",
