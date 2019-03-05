@@ -69,6 +69,13 @@
         "patch_set": "d7e85c955c08997eee33767450b768dd278b2c45",
         "result_url": ""
     },
+    "moo-job-vdg2q": {
+        "credential": "demo/demo",
+        "endpoint": "192.168.200.213:8500",
+        "ip": "80.158.7.210:60257",
+        "patch_set": "20da0fc8c09e125a38e2a9ce1502eef657cd71d3",
+        "result_url": ""
+    },
     "moo-job-vmaix9": {
         "credential": "demo/demo",
         "endpoint": "192.168.200.175:8500",
