@@ -13,6 +13,13 @@
         "patch_set": "f82a3450b8d2762183b1569c517343df91176d63",
         "result_url": "http://80.158.7.210/logs/26/226/f82a3450b8d2762183b1569c517343df91176d63/check/ai-on-openlab-test-vm-with-gpu/e1ae2a9/test_results/"
     },
+    "moo-job-g6whl": {
+        "credential": "demo/demo",
+        "endpoint": "",
+        "ip": "80.158.7.210:60514",
+        "patch_set": "41b4726c94d46c3d5354b2925e9974d52941b332",
+        "result_url": "http://80.158.7.210/logs/31/231/41b4726c94d46c3d5354b2925e9974d52941b332/check/ai-on-openlab-test-vm/2aed291/test_results/"
+    },
     "moo-job-vdg2q": {
         "credential": "demo/demo",
         "endpoint": "192.168.200.213:8500",
