@@ -17,8 +17,6 @@
                 password: 'jingyibb1314~',
             })
             const repo = octo.repos('moo-ai', 'moo-ai.github.io')
-            var pr_num = ''
-            var pr_commit_id = ""
             var file_name
             var content
             var is_remote = true
@@ -50,59 +48,66 @@
                 var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
                 // fetch the repo
                 log_text.value += "Initializing..."
-                repo.commits.fetch()
-                    .then(function({
-                        items
-                    }) {
-                        lastcommit = items[items.length - 1]
-                        // create branch
-                        repo.git.refs.create({
-                                ref: 'refs/heads/' + new_branch_name,
-                                sha: lastcommit.sha
-                            })
-                            .then(function() {
-                                log_text.value += "Done\nUploading..."
-                                if (is_cpu) {
-                                    file_path = "user_data/" + file_name
-                                } else {
-                                    file_path = "user_data_gpu/" + file_name
-                                }
-                                let config = {
-                                    message: 'test-for-ai-commit-for-create-new-file',
-                                    content: content,
-                                    branch: new_branch_name,
-                                    path: file_path
-                                }
-                                // upload file
-                                repo.contents(file_path).add(config)
-                                    .then(function() {
-                                        let pr_conf = {
-                                            title: new_branch_name + " AI CI Job",
-                                            body: "Reproduce ML environment via OpenLab",
-                                            base: "master",
-                                            head: "moo-ai:" + new_branch_name
+                repo.commits.fetch().then(function({items}) {
+                    lastcommit = items[items.length - 1]
+                    // create branch
+                    repo.git.refs.create({
+                        ref: 'refs/heads/' + new_branch_name,
+                        sha: lastcommit.sha
+                    }).then(function() {
+                        log_text.value += "Done\nUploading..."
+                        if (is_cpu) {
+                            file_path = "user_data/" + file_name
+                        } else {
+                            file_path = "user_data_gpu/" + file_name
+                        }
+                        let config = {
+                            message: 'test-for-ai-commit-for-create-new-file',
+                            content: content,
+                            branch: new_branch_name,
+                            path: file_path
+                        }
+                        // upload file
+                        repo.contents(file_path).add(config).then(function() {
+                            let pr_conf = {
+                                title: new_branch_name + " AI CI Job",
+                                body: "Reproduce ML environment via OpenLab",
+                                base: "master",
+                                head: "moo-ai:" + new_branch_name
+                            }
+                            // create pull request
+                            repo.pulls.create(pr_conf).then(function() {
+                                log_text.value += "Done\nReproducing environment..."
+                                // get task_info
+                                repo.contents('env_info/task_list.json').fetch()
+                                    .then(function(result) {
+                                        parsed_data = JSON.parse(atob(result.content))
+                                        parsed_data[job_name] = {}
+                                        parsed_data = JSON.stringify(parsed_data)
+                                        let task_config = {
+                                            message: 'Create new task info',
+                                            content: btoa(parsed_data),
+                                            sha: result.sha,
+                                            branch: "master",
+                                            path: "env_info/task_list.json"
                                         }
-                                        // create pull request
-                                        repo.pulls.create(pr_conf)
-                                            .then(function(resp) {
-                                                log_text.value += "Done\nReproducing environment..."
-                                                pr_num = resp.number
-                                                // get the pull request info
-                                                repo.pulls(pr_num).fetch()
-                                                    .then(function(body) {
-                                                        log_text.value +=
-                                                            "Started\nThe Job name is "
-                                                        log_text.value += job_name
-                                                        log_text.value +=
-                                                            "\nJump to status page to get the result."
-                                                        document.getElementById('jump_to_result').removeAttribute(
-                                                            'disabled')
-                                                        pr_commit_id = body.head.sha
-                                                    })
-                                            })
+                                        repo.contents("env_info/task_list.json").add(
+                                            task_config).then(function() {
+                                            log_text.value +=
+                                                "Started\nThe Job name is "
+                                            log_text.value += job_name
+                                            log_text.value +=
+                                                "\nJump to status page to get the result."
+                                            document.getElementById(
+                                                'jump_to_result').removeAttribute(
+                                                'disabled')
+                                        })
                                     })
+
                             })
+                        })
                     })
+                })
             }
 
             function read_input_file(files) {
