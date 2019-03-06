@@ -43,15 +43,12 @@
                         ip_cell.innerHTML = row_data["ip"]
                         if (row_data["result_url"] === '') {
                             result_cell.innerHTML = " Please login the ML environment instead!"
+                            endpoint_cell.innerHTML = 'N/A'
                         } else {
                             result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" +
                                 "<u>Link</u></a>"
-                        }
-                        if (row_data['endpoint'] != '') {
-                            endpoint_cell.innerHTML = "<a href='" + row_data["result_url"] + "web_page/index.html" + "' class='btn btn-primary'>Go</a>"
-                        }
-                        else {
-                            endpoint_cell.innerHTML = 'N/A'
+                            endpoint_cell.innerHTML = "<a href='" + row_data["result_url"] +
+                                "web_page/index.html" + "' class='btn btn-primary'>Go</a>"
                         }
                         status_cell.innerHTML =
                             "<div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div>"
