@@ -17,10 +17,10 @@
         "patch_set": "a2be00a3e2104b9e058a1bb5761652abaa872c9e",
         "result_url": "http://80.158.7.210/logs/35/235/a2be00a3e2104b9e058a1bb5761652abaa872c9e/check/ai-on-openlab-test-vm/0740a28/test_results/"
     },
-    "moo-job-qnqzj7": {
+    "moo-job-m48dmc": {
         "credential": "demo/demo",
-        "ip": "80.158.7.210:60253",
-        "patch_set": "8fa25e255435750b81f24bdaa20fd3d73c88bfe7",
-        "result_url": "http://80.158.7.210/logs/37/237/8fa25e255435750b81f24bdaa20fd3d73c88bfe7/check/ai-on-openlab-test-vm/7c43770/test_results/"
+        "ip": "80.158.7.210:60980",
+        "patch_set": "9fd40246e609050f9683e1740012ab093c9eafcd",
+        "result_url": "http://80.158.7.210/logs/38/238/9fd40246e609050f9683e1740012ab093c9eafcd/check/ai-on-openlab-test-vm/5deacee/test_results/"
     }
 }
