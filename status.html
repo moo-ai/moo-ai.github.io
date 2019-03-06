@@ -44,7 +44,11 @@
                         if (row_data["result_url"] === '') {
                             result_cell.innerHTML = " Please login the ML environment instead!"
                             endpoint_cell.innerHTML = 'N/A'
-                        } else {
+                        } else if (!row_data["result_url"]) {
+                            result_cell.innerHTML = "undefined"
+                            endpoint_cell.innerHTML = "undefined"
+                        }
+                        else {
                             result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" +
                                 "<u>Link</u></a>"
                             endpoint_cell.innerHTML = "<a href='" + row_data["result_url"] +
