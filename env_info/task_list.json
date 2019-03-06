@@ -31,8 +31,8 @@
     },
     "moo-job-p7h512": {
         "credential": "demo/demo",
-        "ip": "80.158.7.210:60949",
+        "ip": "80.158.7.210:60363",
         "patch_set": "ce348e5c72d6b6b2c208c3e871c3ace3a6ca97bc",
-        "result_url": "http://80.158.7.210/logs/40/240/ce348e5c72d6b6b2c208c3e871c3ace3a6ca97bc/check/ai-on-openlab-test-vm/d75d545/test_results/"
+        "result_url": "http://80.158.7.210/logs/40/240/ce348e5c72d6b6b2c208c3e871c3ace3a6ca97bc/check/ai-on-openlab-test-vm/f7cd663/test_results/"
     }
 }
