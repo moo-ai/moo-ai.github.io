@@ -5,10 +5,10 @@
         "patch_set": "b461a5d93ed257024a88cdb4e3e6d51095017d28",
         "result_url": "http://80.158.7.210/logs/28/228/b461a5d93ed257024a88cdb4e3e6d51095017d28/check/ai-on-openlab-test-vm/ce14a7f/test_results/"
     },
-    "moo-job-hpiyzr": {
+    "moo-job-g79sk": {
         "credential": "demo/demo",
-        "ip": "80.158.7.210:60884",
-        "patch_set": "28d399f0e96cdac49cb0f702d1f2f2fc31e66752",
-        "result_url": "http://80.158.7.210/logs/33/233/28d399f0e96cdac49cb0f702d1f2f2fc31e66752/check/ai-on-openlab-test-vm/214b74f/test_results/"
+        "ip": "80.158.7.210:60937",
+        "patch_set": "665f5a80a7432a83413308d14c75f8da9f98caa1",
+        "result_url": "http://80.158.7.210/logs/34/234/665f5a80a7432a83413308d14c75f8da9f98caa1/check/ai-on-openlab-test-vm/b1a0c43/test_results/"
     }
 }
