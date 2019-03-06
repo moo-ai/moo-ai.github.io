@@ -70,14 +70,14 @@
             }
 
             function getTestData(numExamples) {
-                let xs = tf.tensor4d(
+                let xs = tf.tensor3d(
                     testImages,
-                    [testImages.length / IMAGE_SIZE, IMAGE_H, IMAGE_W, 1]);
+                    [testImages.length / IMAGE_SIZE, IMAGE_H, IMAGE_W]);
                 let labels = tf.tensor2d(
                     testLabels, [testLabels.length / NUM_CLASSES, NUM_CLASSES]);
 
                 if (numExamples != null) {
-                    xs = xs.slice([0, 0, 0, 0], [numExamples, IMAGE_H, IMAGE_W, 1]);
+                    xs = xs.slice([0, 0, 0], [numExamples, IMAGE_H, IMAGE_W]);
                     labels = labels.slice([0, 0], [numExamples, NUM_CLASSES]);
                 }
                 return {
@@ -98,14 +98,17 @@
             const NUM_TRAIN_ELEMENTS = 55000;
             const NUM_TEST_ELEMENTS = NUM_DATASET_ELEMENTS - NUM_TRAIN_ELEMENTS;
 
-            const MNIST_IMAGES_SPRITE_PATH = 'mnist_images.png';
-            const MNIST_LABELS_PATH =
-                'https://storage.googleapis.com/learnjs-data/model-builder/mnist_labels_uint8';
+            const MNIST_IMAGES_SPRITE_PATH = 'media/mnist_images.png';
+            const MNIST_LABELS_PATH = 'media/mnist_labels_uint8';
             load().then(function() {
                 const examples = getTestData(100)
                 tf.loadLayersModel('replace.me').then(function(model) {
                     const output = model.predict(examples.xs);
-                    console.log(output)
+                    prediction = Array.from(output.argMax(1).dataSync())
+                    actual = Array.from(examples.labels.argMax(1).dataSync())
+                    console.log(prediction)
+                    console.log(actual)
+
                 })
             })
         </script>

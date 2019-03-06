@@ -48,7 +48,7 @@
                                 "<u>Link</u></a>"
                         }
                         if (row_data['endpoint'] != '') {
-                            endpoint_cell.innerHTML = "<a href='inference.html?endpoint=" + row_data["endpoint"] + "' class='btn btn-primary'>Go</a>"
+                            endpoint_cell.innerHTML = "<a href='" + row_data["result_url"] + "web_page/index.html" + "' class='btn btn-primary'>Go</a>"
                         }
                         else {
                             endpoint_cell.innerHTML = 'N/A'
