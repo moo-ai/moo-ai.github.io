@@ -54,21 +54,157 @@
                 <div class="col-10" style="font-family: Arial;">
                     <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
                         <h4 id="item-1">1. Introduction</h4>
-                        <p>...</p>
+<pre>
+  Machine Learning On OpenLab(MOO) aims to help the data experts to reproduce the trained model environment.
+This project is developed based on OpenLab now.
+</pre>
                         <h5 id="item-1-1">1.1 MOO</h5>
-                        <p>...</p>
+<pre>
+  The reason for MOO, as Machine Learning is hard to reproduce cross multiple environments, as ML lacks:
+    - Declarative Infrastructure:
+        Compute, Storage and Network Layers of the stack
+    - Declarative Systems:
+        Kernel Drivers, Configuration, Management Layers of the stack
+    - Pipeline description
+    - Data
+    - Separation of discrete steps(data preparation, featurization, estimation, evaluation, prediction and etc. )
+    These shoud be defined declaratively, using vendor neutral tech, to simplify reuse regardless of the
+  choice of enviroment.
+    So MOO will try to define the model metadata to descript the enviroment of trained model, such as
+  using tensorflow, version 1.12.0, python runtime and some necessary model description. MOO will use
+  the necessary model information to reproduce the training or inference environment, this includes:
+    - Installing all necessary services in the target host
+        (Currently, this project only support Tensorflow framework and Python runtime.)
+    - Provide several ways to touch the environment to do training or inference in the environment.
+    - Get the training or inference results and see how about your model is good enough.
+  The above is enabled via your pass to MOO. 
+  MOO provides CPU or GPU machine learning environment, you can choose which enviroment can fit your model.
+Then MOO will provide a environment to train and get training result to you, also if you want to access the
+environment to continue develop the model or provide some other new train data to go forward the train process,
+MOO will provide the related information to you.
+</pre>
                         <h5 id="item-1-2">1.2 Openlab</h5>
-                        <p>...</p>
+<pre>
+  OpenLab is a community-led program to test and improve support for the cloud-related SDKs/Tools as well as
+platforms like Kubernetes, Terraform, CloudFoundry and more. The goal is to improve the usability, reliability
+and resiliency of tools and applications for hybrid and multi-cloud environments.
+  All of the Machine Learning enviroments are provided by OpenLab, OpenLab will manage the life cycle of the
+enviroment. If you want to know more, please visit <a href="https://docs.openlabtesting.org/publications/">OpenLab</a>
+</pre>
                         <h4 id="item-2">2. How It Work</h4>
-                        <p>...</p>
+<pre>
+  MOO provides a <a href="https://moo-ai.github.io/">web UI</a> for simplify the whole things. But before
+start using MOO, you need to do the following things first.
+  1) Module ZIP file preparation
+     MOO will accept a ZIP file or URL which direct to a ZIP file. The ZIP file includes:
+     - metadata.yaml
+         The YAML needs to try to descript the model enviroment and model itself as much as possible.
+     - model python file(Currently only support tensorflow python script)
+         The python file is treated as the entrypoint to training the specific model.
+  Notes: The model file provided must be compressed to ZIP format.
+  2) Decide the host place of the ZIP file
+     - Host on the website, such as the Object Storage Sever in Huawei Public Cloud.
+         MOO supports fetching the ZIP file via URL, you can just provide a URL to MOO, it will download the
+         ZIP file and begin the train process automaticly.
+     - On your local enviroment.
+         MOO also supports uploading the ZIP file directly.
+  3) CPU or GPU
+     The backend hardware totally based on your python script
+  Here, we had prepared the model file. We can access the <a href="https://moo-ai.github.io/">web UI</a> then.
+  <font size=4><b>△ Click "WorkFlow" Sub-Tag:</b></font>
+<img src="media/1.PNG" />
+
+
+  <font size=4><b>△ Choose a way to upload your Model ZIP file:</b></font>
+<img src="media/2.PNG" />
+<img src="media/3.PNG" />
+
+
+  <font size=4><b>△ Choose CPU or GPU:</b></font>
+<img src="media/4.PNG" />
+
+
+  <font size=4><b>△ Login the Environment or not:</b></font>
+<img src="media/5.PNG" />
+
+
+  <font size=4><b>△ Click Submit Button and Enjoy.</b></font>
+    You will see the Job process histroy here: 
+<img src="media/6.PNG" />
+
+
+  <font size=4><b>△ Now your model had been submited successful, if you want to see the your Job status, you can just
+Click "Get Result" Button or forward to "Status"</b></font>
+<img src="media/7.PNG" />
+	  <b>Or</b>
+<img src="media/8.PNG" />
+  Here example, we can see the Job name is <b>moo-job-hqx9uo</b>, which is a CPU version Job and we don't want to
+login the enviroment(we don't "√" <b>Login the Environment or not</b>). We will jump to <b>Status</b> page and see
+the job status. There are several columes:
+    - <b>Job Name</b>
+      The submited job name.
+    - <b>Credential</b>
+      The Username and Password to login the ML enviroment provided by MOO.
+    - <b>IP Address</b>
+      The public ip address and external port through ssh.
+    - <b>ML Result Link</b>
+      The process log or already trained model url. You can access the model after training by MOO enviroment and the training log.
+    - <b>Inference</b>
+      The inference page after model training complete.
+    - <b>Status</b>
+      The MOO job status.
+Then, let's search the <b>moo-job-hqx9uo</b> job.
+<img src="media/status1.PNG" />
+Notes: In above shows, <b>moo-job-hqx9uo</b> job had been defined as a non login enviroment job. So we can see
+       the <b>Status</b> of <b>moo-job-hqx9uo</b> job is <b>SUCCESS</b>, the <b>ML Result Link</b> and <b>Inference</b> had been generated.
+       If you want to login the Environment, MOO will keep the enviroment for a while, so <b>ML Result Link</b>
+       will be replaced by "Please login the ML enviroment instead!", and won't generate the <b>Inference</b> page.
+
+
+  <font size=4><b>△ Go to the Status Link</b></font>
+<img src="media/result_link1.PNG" />
+<img src="media/test_result1.PNG" />
+In "process.log", you will see the whole training histroy about your model. In "training_result" directory,
+we will see the new trained model.
+
+
+  <font size=4><b>△ Taste Online Inference</b></font>
+Now click Inference <b>Go</b> Button to access the Inference page.
+<img src="media/inference1.PNG" />
+<img src="media/inference.PNG" />
+Upload a new picture or file for predict, and see the prediction result in the following <b>Result</b> block.
+
+</pre>
                         <h4 id="item-3">3. Metadata Definition</h4>
-                        <p>...</p>
+<pre>
+  Model Metadata aims to descript the model train enviroment, module application and parameters during
+training process as much as possible. It mainly includes(Currently, TODO):
+  - <b>Framework</b>
+    • name
+      The framework name, such as tensorflow, kubeflow and etc.
+    • version
+      The framework version, such as 1.12.0
+    • runtime
+      The framework runtime, such as python, go, java, c
+  - <b>entrypoint</b>
+    The entrypoint about model.
+  - <b>output_folder</b>
+    The directory which process.log and model would be stored in.
+  
+</pre>
                         <h5 id="item-3-1">3.1 Concept</h5>
                         <p>...</p>
                         <h5 id="item-3-2">3.2 Parameters</h5>
                         <p>...</p>
                         <h5 id="item-3-3">3.3 Example</h5>
-                        <p>...</p>
+<textarea rows='8' cols='28' readonly>
+framework:
+  - name: tensorflow
+  - version: 1.12.0
+  - runtime: python2.7
+entry_point: tensorflow_test_mnist.py
+output_folder: training_result
+</textarea>
                     </div>
                 </div>
             </div>
