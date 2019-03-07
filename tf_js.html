@@ -85,8 +85,44 @@
                     labels
                 };
             }
+
+            function upload_image(files) {
+                var file = files[0];
+                if (file) {
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        input_image = document.getElementById("input_img")
+                        input_image.src = event.target.result
+                    };
+                }
+                reader.readAsDataURL(file);
+            }
+
+            function predict_number_fn() {
+                image = new Image(28, 28)
+                image.src = input_image.src
+                var canvas = document.createElement('canvas')
+                canvas.width = image.width
+                canvas.height = image.height
+                canvas.getContext('2d').drawImage(image, 0, 0, image.width, image.height)
+                input_image_data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+                input_array = new Float32Array(28*28)
+                for (let j = 0; j < input_image_data.data.length / 4; j++) {
+                    // All channels hold an equal value since the image is grayscale, so
+                    // just read the red channel.
+                    input_array[j] = input_image_data.data[j * 4] / 255;
+                }
+                input_tensor = tf.tensor3d(input_array, [1, 28,28])
+                predict_result = trained_model.predict(input_tensor)
+                console.log(Array.from(predict_result.argMax(1).dataSync()))
+                predict_number = Array.from(predict_result.argMax(1).dataSync())[0]
+                predict_output_text = document.getElementById("predict_output_text")
+                predict_output_text.value = predict_number
+            }
         </script>
         <script type="text/javascript">
+            var trained_model
+            var input_image
             var testImages
             var testLabels
             const IMAGE_H = 28;
@@ -103,6 +139,7 @@
             load().then(function() {
                 const examples = getTestData(100)
                 tf.loadLayersModel('replace.me').then(function(model) {
+                    trained_model = model
                     const output = model.predict(examples.xs);
                     prediction = Array.from(output.argMax(1).dataSync())
                     actual = Array.from(examples.labels.argMax(1).dataSync())
@@ -118,14 +155,16 @@
                     <div class="card">
                         <div class="card-header" style="background-color: #8FCAFE;"><b>Upload a picture for predict</b></div>
                         <div class="card-body">
-                            <input type="file" />
+                            <input type="file" onchange="upload_image(this.files)" />
+                            <img id="input_img" alt="The input picture" />
+                            <button id="predict_button" onclick="predict_number_fn()">Predict</button>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-header" style="background-color: #8FCAFE;"><b>Result</b></div>
                         <div class="card-body">
                             <textarea style="font-size:16px;resize:none;" class="form-control" rows=5 readonly="readonly"
-                                disabled="disabled" id="process" placeholder="Progress Log will be printed here."></textarea>
+                                disabled="disabled" id="predict_output_text" placeholder="Progress Log will be printed here."></textarea>
                         </div>
                     </div>
                 </div>
