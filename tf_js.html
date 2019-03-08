@@ -12,90 +12,23 @@
     </head>
     <body>
         <script type="text/javascript">
-            async function load() {
-                // Make a request for the MNIST sprited image.
-                const img = new Image();
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const imgRequest = new Promise((resolve, reject) => {
-                    img.crossOrigin = '';
-                    img.onload = () => {
-                        img.width = img.naturalWidth;
-                        img.height = img.naturalHeight;
-
-                        const datasetBytesBuffer =
-                            new ArrayBuffer(NUM_DATASET_ELEMENTS * IMAGE_SIZE * 4);
-
-                        const chunkSize = 5000;
-                        canvas.width = img.width;
-                        canvas.height = chunkSize;
-
-                        for (let i = 0; i < NUM_DATASET_ELEMENTS / chunkSize; i++) {
-                            const datasetBytesView = new Float32Array(
-                                datasetBytesBuffer, i * IMAGE_SIZE * chunkSize * 4,
-                                IMAGE_SIZE * chunkSize);
-                            ctx.drawImage(
-                                img, 0, i * chunkSize, img.width, chunkSize, 0, 0, img.width,
-                                chunkSize);
-
-                            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-                            for (let j = 0; j < imageData.data.length / 4; j++) {
-                                // All channels hold an equal value since the image is grayscale, so
-                                // just read the red channel.
-                                datasetBytesView[j] = imageData.data[j * 4] / 255;
-                            }
-                        }
-                        datasetImages = new Float32Array(datasetBytesBuffer);
-
-                        resolve();
-                    };
-                    img.src = MNIST_IMAGES_SPRITE_PATH;
-                });
-
-                const labelsRequest = fetch(MNIST_LABELS_PATH);
-                const [imgResponse, labelsResponse] =
-                await Promise.all([imgRequest, labelsRequest]);
-
-                datasetLabels = new Uint8Array(await labelsResponse.arrayBuffer());
-
-                // Slice the the images and labels into train and test sets.
-                trainImages =
-                    datasetImages.slice(0, IMAGE_SIZE * NUM_TRAIN_ELEMENTS);
-                testImages = datasetImages.slice(IMAGE_SIZE * NUM_TRAIN_ELEMENTS);
-                trainLabels =
-                    datasetLabels.slice(0, NUM_CLASSES * NUM_TRAIN_ELEMENTS);
-                testLabels =
-                    datasetLabels.slice(NUM_CLASSES * NUM_TRAIN_ELEMENTS);
-            }
-
-            function getTestData(numExamples) {
-                let xs = tf.tensor3d(
-                    testImages,
-                    [testImages.length / IMAGE_SIZE, IMAGE_H, IMAGE_W]);
-                let labels = tf.tensor2d(
-                    testLabels, [testLabels.length / NUM_CLASSES, NUM_CLASSES]);
-
-                if (numExamples != null) {
-                    xs = xs.slice([0, 0, 0], [numExamples, IMAGE_H, IMAGE_W]);
-                    labels = labels.slice([0, 0], [numExamples, NUM_CLASSES]);
-                }
-                return {
-                    xs,
-                    labels
-                };
-            }
-
             function upload_image(files) {
                 var file = files[0];
                 if (file) {
+                    fileFormat = file['name'].substring(file['name'].lastIndexOf(".")).toLowerCase()
+                    if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
+                        alert('Wrong format, must be one of：png/jpg/jpeg')
+                        return
+                    }
                     var reader = new FileReader();
                     reader.onload = function(event) {
                         input_image = document.getElementById("input_img")
                         input_image.src = event.target.result
-                    };
+                    }
+                    reader.readAsDataURL(file);
+                    predict_button = document.getElementById("predict_button")
+                    predict_button.removeAttribute("disabled")
                 }
-                reader.readAsDataURL(file);
             }
 
             function predict_number_fn() {
@@ -117,36 +50,16 @@
                 console.log(Array.from(predict_result.argMax(1).dataSync()))
                 predict_number = Array.from(predict_result.argMax(1).dataSync())[0]
                 predict_output_text = document.getElementById("predict_output_text")
-                predict_output_text.value = predict_number
+                predict_output_text.innerText = predict_number
             }
         </script>
         <script type="text/javascript">
             var trained_model
             var input_image
-            var testImages
-            var testLabels
-            const IMAGE_H = 28;
-            const IMAGE_W = 28;
-            const IMAGE_SIZE = IMAGE_H * IMAGE_W;
-            const NUM_CLASSES = 10;
-            const NUM_DATASET_ELEMENTS = 65000;
-
-            const NUM_TRAIN_ELEMENTS = 55000;
-            const NUM_TEST_ELEMENTS = NUM_DATASET_ELEMENTS - NUM_TRAIN_ELEMENTS;
-
-            const MNIST_IMAGES_SPRITE_PATH = 'media/mnist_images.png';
-            const MNIST_LABELS_PATH = 'media/mnist_labels_uint8';
-            load().then(function() {
-                const examples = getTestData(100)
-                tf.loadLayersModel('replace.me').then(function(model) {
-                    trained_model = model
-                    const output = model.predict(examples.xs);
-                    prediction = Array.from(output.argMax(1).dataSync())
-                    actual = Array.from(examples.labels.argMax(1).dataSync())
-                    console.log(prediction)
-                    console.log(actual)
-
-                })
+            tf.loadLayersModel('replace.me').then(function(model) {
+                trained_model = model
+                upload_file_button = document.getElementById("upload_button")
+                upload_file_button.removeAttribute("disabled")
             })
         </script>
         <div class="container-fluid">
@@ -155,16 +68,16 @@
                     <div class="card">
                         <div class="card-header" style="background-color: #8FCAFE;"><b>Upload a picture for predict</b></div>
                         <div class="card-body">
-                            <input type="file" onchange="upload_image(this.files)" />
-                            <img id="input_img" alt="The input picture" />
-                            <button id="predict_button" onclick="predict_number_fn()">Predict</button>
+                            <input type="file" id="upload_button" class='form-control-file' onchange="upload_image(this.files)" disabled="disabled" />
+                            <img id="input_img" class="img-thumbnail" />
+                            <hr class="my-4">
+                            <button id="predict_button" class="btn-primary" onclick="predict_number_fn()" disabled="disabled">Predict</button>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-header" style="background-color: #8FCAFE;"><b>Result</b></div>
                         <div class="card-body">
-                            <textarea style="font-size:16px;resize:none;" class="form-control" rows=5 readonly="readonly"
-                                disabled="disabled" id="predict_output_text" placeholder="Progress Log will be printed here."></textarea>
+                            <p id="predict_output_text" class="text-success" style="font-size: 20px;"></p>
                         </div>
                     </div>
                 </div>
