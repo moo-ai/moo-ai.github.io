@@ -57,233 +57,430 @@
                 </div>
                 <div class="col-10" style="font-family: Arial;">
                     <div data-spy="scroll" data-target="#navbar-example3" data-offset="0">
-                        <div id="wmd-preview" class="wmd-preview">
-                            <div class="md-section-divider"></div>
-                            <div class="md-section-divider"></div>
-                            <h1 data-anchor-id="p6d5" id="item-1">1. Introduction</h1>
-                            <p data-anchor-id="aeco">Machine Learning On OpenLab(MOO) aims to help the data experts to
-                                reproduce the machine learning environment. This project is based on OpenLab now.</p>
-                            <div class="md-section-divider"></div>
-                            <h2 data-anchor-id="qfdd" id="item-1-1">1.1 MOO</h2>
-                            <p data-anchor-id="vcym">The reason for MOO, as Machine Learning is hard to reproduce cross
-                                multiple environments, as ML lacks:</p>
-                            <ul data-anchor-id="j7ni">
-                                <li>Declarative Infrastructure. Like: Compute, Storage and Network Layers of the stack.</li>
-                                <li>Declarative Systems. Like: Kernel Drivers, Configuration, Management Layers of the
-                                    stack</li>
-                                <li>Pipeline description </li>
-                                <li>Data</li>
-                                <li>Separation of discrete steps(data preparation, featurization, estimation,
-                                    evaluation, prediction and etc.</li>
-                            </ul>
-                            <p data-anchor-id="a7je">These should be defined declaratively, using vendor neutral tech,
-                                to simplify reuse regardless of the choice of environment.</p>
-                            <p data-anchor-id="w0g9">So MOO will try to define the model metadata to describe the
-                                environment of trained model, such as using tensorflow, version 1.12.0, python runtime
-                                and some necessary model description. MOO will use the necessary model information to
-                                reproduce the training or inference environment, this includes:</p>
-                            <ul data-anchor-id="f7o6">
-                                <li>Installing all necessary services in the target host. (Currently, this project only
-                                    support Tensorflow framework and Python runtime) </li>
-                                <li>Provide several ways to touch the environment to do training or inference in the
-                                    environment.</li>
-                                <li>Get the training or inference results and see how about your model is good enough.</li>
-                            </ul>
-                            <p data-anchor-id="tkr2">The above is enabled via your pass to MOO.</p>
-                            <p data-anchor-id="i0cj">MOO provides CPU or GPU machine learning environment, you can
-                                choose which environment can fit your model. Then MOO will provide a environment to
-                                train and get training result to you, also if you want to access the environment to
-                                continue develop the model or provide some other new train data to go forward the train
-                                process, MOO will provide the related information to you.</p>
-                            <div class="md-section-divider"></div>
-                            <h2 data-anchor-id="is63" id="item-1-2">1.2 Openlab</h2>
-                            <p data-anchor-id="8uks">OpenLab is a community program to test and improve support for the
-                                cloud-related SDKs/Tools as well as platforms like Kubernetes, Terraform, CloudFoundry
-                                and more. The goal is to improve the usability, reliability and resiliency of tools and
-                                applications for hybrid and multi-cloud environments. All of the Machine Learning
-                                environments are provided by OpenLab, OpenLab will manage the life cycle of the
-                                environment. If you want to know more, please visit <a href="https://docs.openlabtesting.org/publications/"
-                                    target="_blank">OpenLab</a></p>
-                            <div class="md-section-divider"></div>
-                            <h1 data-anchor-id="85al" id="item-2">2. How It Work</h1>
-                            <div class="md-section-divider"></div>
-                            <h2 data-anchor-id="smtx" id="item-2-1">2.1 Preparation</h2>
-                            <p data-anchor-id="s48l">MOO provides a web UI for simplify the whole things. But before
-                                start using MOO, you need to do the following things first.</p>
-                            <ol data-anchor-id="szn8">
-                                <li>
-                                    <p>Module ZIP file preparation</p>
+                        <h1 data-breakpage id="item-1">1. Introduction</h1>
+                        <p>Machine Learning On OpenLab(MOO) aims to help the data experts to reproduce the machine
+                            learning environment. This project is based on OpenLab now.</p>
+                        <h2 id="item-1-1">1.1 MOO</h2>
+                        <p>The reason for MOO, as Machine Learning is hard to reproduce cross multiple environments, as
+                            ML lacks:</p>
+                        <ul>
+                            <li>Declarative Infrastructure. Like: Compute, Storage and Network Layers of the stack.</li>
+                            <li>Declarative Systems. Like: Kernel Drivers, Configuration, Management Layers of the
+                                stack</li>
+                            <li>Pipeline description </li>
+                            <li>Data</li>
+                            <li>Separation of discrete steps(data preparation, featurization, estimation, evaluation,
+                                prediction and etc.</li>
 
-                                    <p>MOO will accept a ZIP file or URL which direct to a ZIP file. The ZIP file
-                                        includes: </p>
+                        </ul>
+                        <p>These should be defined declaratively, using vendor neutral tech, to simplify reuse
+                            regardless of the choice of environment.</p>
+                        <p>So MOO will try to define the model metadata to describe the environment of trained model,
+                            such as using tensorflow, version 1.12.0, python runtime and some necessary model
+                            description. MOO will use the necessary model information to reproduce the training or
+                            inference environment, this includes:</p>
+                        <ul>
+                            <li>Installing all necessary services in the target host. (Currently, this project only
+                                support Tensorflow framework and Python runtime) </li>
+                            <li>Provide several ways to touch the environment to do training or inference in the
+                                environment.</li>
+                            <li>Get the training or inference results and see how about your model is good enough.</li>
 
-                                    <ul>
-                                        <li>
-                                            <p>metadata.yaml </p>
+                        </ul>
+                        <p>The above is enabled via your pass to MOO.</p>
+                        <p>MOO provides CPU or GPU machine learning environment, you can choose which environment can
+                            fit your model. Then MOO will provide a environment to train and get training result to
+                            you, also if you want to access the environment to continue develop the model or provide
+                            some other new train data to go forward the train process, MOO will provide the related
+                            information to you.</p>
+                        <h2 id="item-1-2">1.2 Openlab</h2>
+                        <p>OpenLab is a community program to test and improve support for the cloud-related SDKs/Tools
+                            as well as platforms like Kubernetes, Terraform, CloudFoundry and more. The goal is to
+                            improve the usability, reliability and resiliency of tools and applications for hybrid and
+                            multi-cloud environments. All of the Machine Learning environments are provided by OpenLab,
+                            OpenLab will manage the life cycle of the environment. If you want to know more, please
+                            visit <a href='https://docs.openlabtesting.org/publications/'>OpenLab</a></p>
+                        <h1 data-breakpage id="item-2">2. How It Work</h1>
+                        <h2 id="item-2-1">2.1 Preparation</h2>
+                        <p>MOO provides a web UI for simplify the whole things. But before start using MOO, you need to
+                            do the following things first.</p>
+                        <ol>
+                            <li>
+                                <p>Module ZIP file preparation</p>
+                                <p>MOO will accept a ZIP file or URL which direct to a ZIP file. The ZIP file includes:
+                                </p>
+                                <ul>
+                                    <li>
+                                        <p>metadata.yaml </p>
+                                        <p>The YAML needs to try to descript the model enviroment and model itself as
+                                            much as possible. </p>
+                                    </li>
+                                    <li>
+                                        <p>model python file(Currently only support tensorflow python script) </p>
+                                        <p>The python file is treated as the entrypoint to training the specific model.
+                                            Notes: The model file provided must be compssed to ZIP format.</p>
+                                    </li>
 
-                                            <p>The YAML needs to try to descript the model enviroment and model itself
-                                                as much as possible. </p>
-                                        </li>
-                                        <li>
-                                            <p>model python file(Currently only support tensorflow python script) </p>
+                                </ul>
+                            </li>
+                            <li>
+                                <p>Decide the host place of the ZIP file</p>
+                                <ul>
+                                    <li>
+                                        <p>Host on the website, such as the Object Storage Sever in Huawei Public
+                                            Cloud. </p>
+                                        <p>MOO supports fetching the ZIP file via URL, you can just provide a URL to
+                                            MOO, it will download the ZIP file and begin the train process automaticly.</p>
+                                    </li>
+                                    <li>
+                                        <p>On your local enviroment. </p>
+                                        <p>MOO also supports uploading the ZIP file directly. </p>
+                                    </li>
 
-                                            <p>The python file is treated as the entrypoint to training the specific
-                                                model. Notes: The model file provided must be compssed to ZIP format.</p>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>Decide the host place of the ZIP file</p>
+                                </ul>
+                            </li>
+                            <li>
+                                <p>CPU or GPU</p>
+                                <p>The backend hardware totally based on your python script</p>
+                            </li>
 
-                                    <ul>
-                                        <li>
-                                            <p>Host on the website, such as the Object Storage Sever in Huawei Public
-                                                Cloud. </p>
+                        </ol>
+                        <h2 id="item-2-2">2.2 WorkFlow</h2>
+                        <p>Here, we had prepared the model file. We can access the web UI then. </p>
+                        <p>a. Click &quot;WorkFlow&quot; Sub-Tag: </p>
+                        <p><img src='https://moo-ai.github.io/media/1.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p>b. Choose a way to upload your Model ZIP file:</p>
+                        <p><img src='https://moo-ai.github.io/media/2.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p><img src='https://moo-ai.github.io/media/3.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p>c. Choose CPU or GPU: </p>
+                        <p>&nbsp;</p>
+                        <p><img src='https://moo-ai.github.io/media/4.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p>d. Login the Environment or not:</p>
+                        <p><img src='https://moo-ai.github.io/media/5.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p>e. Click Submit Button and Enjoy. You will see the Job process histroy here: </p>
+                        <p><img src='https://moo-ai.github.io/media/6.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p>Now your model had been submited successful, if you want to see the your Job status, you can
+                            just Click &quot;Get Result&quot; Button or forward to &quot;Status&quot;</p>
+                        <p><img src='https://moo-ai.github.io/media/7.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p> Or</p>
+                        <p><img src='https://moo-ai.github.io/media/8.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p>Here example, we can see the Job name is moo-job-hqx9uo, which is a CPU version Job and we
+                            don&#39;t want to login the enviroment(we don&#39;t &quot;√&quot; Login the Environment or
+                            not). We will jump to Status page and see the job status. There are several columes: </p>
+                        <ul>
+                            <li>
+                                <p>Job Name </p>
+                                <p>The submited job name.</p>
+                            </li>
+                            <li>
+                                <p>Credential</p>
+                                <p>The Username and Password to login the ML enviroment provided by MOO. </p>
+                            </li>
+                            <li>
+                                <p>IP Address</p>
+                                <p>The public ip address and external port through ssh. </p>
+                            </li>
+                            <li>
+                                <p>ML Result Link</p>
+                                <p>The process log or already trained model url. You can access the model after
+                                    training by MOO enviroment and the training log. </p>
+                            </li>
+                            <li>
+                                <p>Inference</p>
+                                <p>The inference page after model training complete. </p>
+                            </li>
+                            <li>
+                                <p>Status The MOO job status.</p>
+                            </li>
 
-                                            <p>MOO supports fetching the ZIP file via URL, you can just provide a URL
-                                                to MOO, it will download the ZIP file and begin the train process
-                                                automaticly.</p>
-                                        </li>
-                                        <li>
-                                            <p>On your local enviroment. </p>
+                        </ul>
+                        <p>Then, let&#39;s search the moo-job-hqx9uo job. </p>
+                        <p><img src='https://moo-ai.github.io/media/status1.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <blockquote>
+                            <p>In above shows, moo-job-hqx9uo job had been defined as a non login enviroment job. So we
+                                can see the Status of moo-job-hqx9uo job is SUCCESS, the ML Result Link and Inference
+                                had been generated. If you want to login the Environment, MOO will keep the enviroment
+                                for a while, so ML Result Link will be replaced by &quot;Please login the ML enviroment
+                                instead!&quot;, and won&#39;t generate the Inference page. </p>
+                        </blockquote>
+                        <p>f. Go to the Result Link</p>
+                        <p><img src='https://moo-ai.github.io/media/result_link1.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p><img src='https://moo-ai.github.io/media/test_result1.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p>In &quot;process.log&quot;, you will see the whole training histroy about your model. In
+                            &quot;training_result&quot; directory, we will see the new trained model. </p>
+                        <p>g. Taste Online Inference</p>
+                        <p><img src='https://moo-ai.github.io/media/inference.PNG' alt='' referrerPolicy='no-referrer' /></p>
+                        <p>Now click Inference Go Button to access the Inference page. Upload a new picture or file for
+                            pdict, and see the pdiction result in the following Result block.</p>
+                        <h1 data-breakpage id="item-3">3. Metadata Definition</h1>
+                        <p>Model Metadata spec aims to describe the model train enviroment, module application and
+                            parameters during training process as much as possible.</p>
+                        <h2 id="item-3-1">3.1 Concept</h2>
+                        <p>We&#39;d like to bring up a standard here to describe machine learning environment.The
+                            standard is machine learning metadata spec. Typically, operators can reproduce the
+                            environment easily with the metadata yaml file. The spec is now just in POC. More feedback
+                            is welcome.</p>
+                        <h2 id="item-3-2">3.2 Parameters</h2>
+                        <ul>
+                            <li>
+                                <p>Framework</p>
+                                <figure>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style='text-align:left;'>Key</th>
+                                                <th style='text-align:left;'>Type</th>
+                                                <th style='text-align:left;'>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style='text-align:left;'>name</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>The framework name</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>version</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>The framework version</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>runtime</td>
+                                                <td style='text-align:left;'>Object</td>
+                                                <td style='text-align:left;'>The framework runtime object</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <ul>
+                                    <li>
+                                        <p>runtime</p>
+                                        <figure>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th style='text-align:left;'>Key</th>
+                                                        <th style='text-align:left;'>Type</th>
+                                                        <th style='text-align:left;'>Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style='text-align:left;'>name</td>
+                                                        <td style='text-align:left;'>String</td>
+                                                        <td style='text-align:left;'>The framework runtime name</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style='text-align:left;'>requirement(optional)</td>
+                                                        <td style='text-align:left;'>List</td>
+                                                        <td style='text-align:left;'>The third-part library that the
+                                                            job depends on</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </figure>
+                                    </li>
 
-                                            <p>MOO also supports uploading the ZIP file directly. </p>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <p>CPU or GPU</p>
+                                </ul>
+                            </li>
 
-                                    <p>The backend hardware totally based on your python script</p>
-                                </li>
-                            </ol>
-                            <div class="md-section-divider"></div>
-                            <h2 data-anchor-id="42rw" id="item-2-2">2.2 WorkFlow</h2>
-                            <p data-anchor-id="yeto">Here, we had prepared the model file. We can access the web UI
-                                then. </p>
-                            <p data-anchor-id="wwbr">a. Click "WorkFlow" Sub-Tag: </p>
-                            <p data-anchor-id="kx78"><img src="media/1.PNG" alt="" title=""></p>
-                            <p data-anchor-id="a2xn">b. Choose a way to upload your Model ZIP file:</p>
-                            <p data-anchor-id="m4pd"><img src="media/2.PNG" alt="" title=""></p>
-                            <p data-anchor-id="8ya2"><img src="media/3.PNG" alt="" title=""></p>
-                            <p data-anchor-id="ogj0">c. Choose CPU or GPU: </p>
-                            <p data-anchor-id="yjja"><img src="media/4.PNG" alt="" title=""></p>
-                            <p data-anchor-id="4glp">d. Login the Environment or not:</p>
-                            <p data-anchor-id="gape"><img src="media/5.PNG" alt="" title=""></p>
-                            <p data-anchor-id="yih1">e. Click Submit Button and Enjoy. You will see the Job process
-                                histroy here: </p>
-                            <p data-anchor-id="3j7z"><img src="media/6.PNG" alt="" title=""></p>
-                            <p data-anchor-id="ao1d">Now your model had been submited successful, if you want to see
-                                the your Job status, you can just Click "Get Result" Button or forward to "Status"</p>
-                            <p data-anchor-id="un7s"><img src="media/7.PNG" alt="" title=""></p>
-                            <p data-anchor-id="3yfy">Or</p>
-                            <p data-anchor-id="oi6k"><img src="media/8.PNG" alt="" title=""></p>
-                            <p data-anchor-id="v6ga">Here example, we can see the Job name is moo-job-hqx9uo, which is
-                                a CPU version Job and we don't want to login the enviroment(we don't "√" Login the
-                                Environment or not). We will jump to Status page and see the job status. There are
-                                several columes: </p>
-                            <ul data-anchor-id="xd79">
-                                <li>
-                                    <p>Job Name </p>
+                        </ul>
+                        <ul>
+                            <li>
+                                <p>Model</p>
+                                <figure>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style='text-align:left;'>Key</th>
+                                                <th style='text-align:left;'>Type</th>
+                                                <th style='text-align:left;'>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style='text-align:left;'>name</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>The name of model </td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>version</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>The version of model </td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>source</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>The address of model file. It can be a
+                                                    remote or local one</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>creator</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>The author of model </td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>time</td>
+                                                <td style='text-align:left;'>Date</td>
+                                                <td style='text-align:left;'>The creation time of model</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                            </li>
 
-                                    <p>The submited job name.</p>
-                                </li>
-                                <li>
-                                    <p>Credential</p>
+                        </ul>
+                        <ul>
+                            <li>
+                                <p>Dataset</p>
+                                <figure>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style='text-align:left;'>Key</th>
+                                                <th style='text-align:left;'>Type</th>
+                                                <th style='text-align:left;'>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style='text-align:left;'>name</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>version</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>source</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                            </li>
+                            <li>
+                                <p>data_process</p>
+                                <figure>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style='text-align:left;'>Key</th>
+                                                <th style='text-align:left;'>Type</th>
+                                                <th style='text-align:left;'>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style='text-align:left;'>data_load</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>data_split</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>padding</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                            </li>
+                            <li>
+                                <p>model_architecture</p>
+                                <figure>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style='text-align:left;'>Key</th>
+                                                <th style='text-align:left;'>Type</th>
+                                                <th style='text-align:left;'>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                            </li>
+                            <li>
+                                <p>training_params</p>
+                                <figure>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th style='text-align:left;'>Key</th>
+                                                <th style='text-align:left;'>Type</th>
+                                                <th style='text-align:left;'>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style='text-align:left;'>learning_rate</td>
+                                                <td style='text-align:left;'>Float</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>loss</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>batch_size</td>
+                                                <td style='text-align:left;'>Int</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>epoch</td>
+                                                <td style='text-align:left;'>Int</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>optimizer</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                            <tr>
+                                                <td style='text-align:left;'>train_op</td>
+                                                <td style='text-align:left;'>String</td>
+                                                <td style='text-align:left;'>TBD</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                            </li>
 
-                                    <p>The Username and Password to login the ML enviroment provided by MOO. </p>
-                                </li>
-                                <li>
-                                    <p>IP Address</p>
+                        </ul>
+                        <h2 id="item-3-3">3.3 Example</h2>
+                        <pre style="background-color: #CED4DA;"><code>framework:
+  - name: tensorflow
+  - version: 1.12.0
+  - runtime: python2.7
+entry_point: tensorflow_test_mnist.py
+output_folder: training_result
+</code></pre>
 
-                                    <p>The public ip address and external port through ssh. </p>
-                                </li>
-                                <li>
-                                    <p>ML Result Link</p>
-
-                                    <p>The process log or already trained model url. You can access the model after
-                                        training by MOO enviroment and the training log. </p>
-                                </li>
-                                <li>
-                                    <p>Inference</p>
-
-                                    <p>The inference page after model training complete. </p>
-                                </li>
-                                <li>
-                                    <p>Status The MOO job status.</p>
-                                </li>
-                            </ul>
-                            <p data-anchor-id="11az">Then, let's search the moo-job-hqx9uo job. </p>
-                            <p data-anchor-id="92th"><img src="media/status1.PNG" alt="" title=""></p>
-                            <blockquote data-anchor-id="4dr1" class="white-blockquote">
-                                <p>In above shows, moo-job-hqx9uo job had been defined as a non login enviroment job.
-                                    So we can see the Status of moo-job-hqx9uo job is SUCCESS, the ML Result Link and
-                                    Inference had been generated. If you want to login the Environment, MOO will keep
-                                    the enviroment for a while, so ML Result Link will be replaced by "Please login the
-                                    ML enviroment instead!", and won't generate the Inference page. </p>
-                            </blockquote>
-                            <p data-anchor-id="lgxw">f. Go to the Result Link</p>
-                            <p data-anchor-id="32no"><img src="media/result_link1.PNG" alt=""
-                                    title=""></p>
-                            <p data-anchor-id="crio"><img src="media/test_result1.PNG" alt=""
-                                    title=""></p>
-                            <p data-anchor-id="64r9">In "process.log", you will see the whole training histroy about
-                                your model. In "training_result" directory, we will see the new trained model. </p>
-                            <p data-anchor-id="nj02">g. Taste Online Inference</p>
-                            <p data-anchor-id="c8m6"><img src="media/inference.PNG" alt=""
-                                    title=""></p>
-                            <p data-anchor-id="fe3q">Now click Inference Go Button to access the Inference page. Upload
-                                a new picture or file for pdict, and see the pdiction result in the following Result
-                                block.</p>
-                            <div class="md-section-divider"></div>
-                            <h1 data-anchor-id="9ahr" id="item-3">3. Metadata Definition</h1>
-                            <p data-anchor-id="7f9y">Model Metadata aims to descript the model train enviroment, module
-                                application and parameters during training process as much as possible. It mainly
-                                includes(Currently, TODO): </p>
-                            <ul data-anchor-id="vmnj">
-                                <li>
-                                    <p>Framework</p>
-
-                                    <ul>
-                                        <li>name</li>
-                                    </ul>
-
-                                    <p>The framework name, such as tensorflow, kubeflow and etc. </p>
-
-                                    <ul>
-                                        <li>version</li>
-                                    </ul>
-
-                                    <p>The framework version, such as 1.12.0 </p>
-
-                                    <ul>
-                                        <li>runtime</li>
-                                    </ul>
-
-                                    <p>The framework runtime, such as python, go, java, c</p>
-                                </li>
-                                <li>
-                                    <p>entrypoint</p>
-
-                                    <p>The entrypoint about model.</p>
-                                </li>
-                                <li>
-                                    <p>output_folder</p>
-
-                                    <p>The directory which process.log and model would be stored in.</p>
-                                </li>
-                            </ul>
-                            <div class="md-section-divider"></div>
-                            <h2 data-anchor-id="97ax" id="item-3-1">3.1 Concept</h2>
-                            <p data-anchor-id="a3t2">...</p>
-                            <div class="md-section-divider"></div>
-                            <h2 data-anchor-id="5huq" id="item-3-2">3.2 Parameters</h2>
-                            <p data-anchor-id="lcnw">...</p>
-                            <div class="md-section-divider"></div>
-                            <h2 data-anchor-id="j4of" id="item-3-3">3.3 Example</h2>
-                            <div class="md-section-divider"></div>
-                            <pre class="prettyprint linenums prettyprinted" data-anchor-id="qjxa" style="background-color: #C6C8CA;"><ol class="linenums"><li class="L0"><code><span class="pln">framework</span><span class="pun">:</span></code></li><li class="L1"><code><span class="pln">  </span><span class="pun">-</span><span class="pln"> name</span><span class="pun">:</span><span class="pln"> tensorflow</span></code></li><li class="L2"><code><span class="pln">  </span><span class="pun">-</span><span class="pln"> version</span><span class="pun">:</span><span class="pln"> </span><span class="lit">1.12</span><span class="pun">.</span><span class="lit">0</span></code></li><li class="L3"><code><span class="pln">  </span><span class="pun">-</span><span class="pln"> runtime</span><span class="pun">:</span><span class="pln"> python2</span><span class="pun">.</span><span class="lit">7</span></code></li><li class="L4"><code><span class="pln">entry_point</span><span class="pun">:</span><span class="pln"> tensorflow_test_mnist</span><span class="pun">.</span><span class="pln">py</span></code></li><li class="L5"><code><span class="pln">output_folder</span><span class="pun">:</span><span class="pln"> training_result</span></code></li></ol></pre>
-                        </div>
                     </div>
                 </div>
             </div>
