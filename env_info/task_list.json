@@ -7,8 +7,8 @@
     },
     "moo-job-wdr3pm": {
         "credential": "demo/demo",
-        "ip": "10.3.0.28",
+        "ip": "10.3.0.25",
         "patch_set": "712578bbba40db0e2ec0ea485c83e7e87d25b445",
-        "result_url": "http://80.158.7.210/logs/61/261/712578bbba40db0e2ec0ea485c83e7e87d25b445/check/ai-on-openlab-test-vm/93cee06/test_results/"
+        "result_url": "http://80.158.7.210/logs/61/261/712578bbba40db0e2ec0ea485c83e7e87d25b445/check/ai-on-openlab-test-vm/b3844b7/test_results/"
     }
 }
