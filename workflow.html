@@ -48,7 +48,9 @@
                 var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
                 // fetch the repo
                 log_text.value += "Initializing..."
-                repo.commits.fetch().then(function({items}) {
+                repo.commits.fetch().then(function({
+                    items
+                }) {
                     lastcommit = items[items.length - 1]
                     // create branch
                     repo.git.refs.create({
@@ -202,14 +204,14 @@
                             <select id="hardware_type" class="custom-select w-25" onchange="select_hardware(this.options[this.options.selectedIndex].value)">
                                 <option style='display: none'></option>
                                 <option value="CPU">CPU</option>
-                                <option value="GPU">GPU</option>
+                                <!-- enable GPU once openlab support  <option value="GPU">GPU</option> -->
                             </select>
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-header" style="background-color: #8FD19E;">
-                            <input type="checkbox" id="is_sleep" onchange="sleep_checkbox(this.checked)"><b> Need to
-                                login ML environment or not</b>
+                            <input type="checkbox" id="is_sleep" onchange="sleep_checkbox(this.checked)">
+                            <b> Need to login ML environment or not</b>
                         </div>
                     </div>
                     <div class="card">
