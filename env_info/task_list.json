@@ -1,1 +1,20 @@
-{"demo":{"credential":"demo/demo","ip":"80.158.7.210:60732","patch_set":"b461a5d93ed257024a88cdb4e3e6d51095017d28","result_url":"http://80.158.7.210/logs/28/228/b461a5d93ed257024a88cdb4e3e6d51095017d28/check/ai-on-openlab-test-vm/ce14a7f/test_results/"},"moo-job-wdr3pm":{"credential":"demo/demo","ip":"37.153.173.65","patch_set":"712578bbba40db0e2ec0ea485c83e7e87d25b445","result_url":"http://logs.openlabtesting.org/logs/61/261/712578bbba40db0e2ec0ea485c83e7e87d25b445/check/ai-on-openlab-test-vm/8b70cd1/test_results/"},"moo-job-h64atn":{}}
+{
+    "demo": {
+        "credential": "demo/demo",
+        "ip": "80.158.7.210:60732",
+        "patch_set": "b461a5d93ed257024a88cdb4e3e6d51095017d28",
+        "result_url": "http://80.158.7.210/logs/28/228/b461a5d93ed257024a88cdb4e3e6d51095017d28/check/ai-on-openlab-test-vm/ce14a7f/test_results/"
+    },
+    "moo-job-h64atn": {
+        "credential": "demo/demo",
+        "ip": "37.153.173.65",
+        "patch_set": "ee6bd51794cf77d03e1c881d1f6ef28a25dfea18",
+        "result_url": ""
+    },
+    "moo-job-wdr3pm": {
+        "credential": "demo/demo",
+        "ip": "37.153.173.65",
+        "patch_set": "712578bbba40db0e2ec0ea485c83e7e87d25b445",
+        "result_url": "http://logs.openlabtesting.org/logs/61/261/712578bbba40db0e2ec0ea485c83e7e87d25b445/check/ai-on-openlab-test-vm/8b70cd1/test_results/"
+    }
+}
