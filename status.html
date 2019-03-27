@@ -93,7 +93,7 @@
                     for (var key in parsed_data) {
                         row_data = parsed_data[key]
 
-                        var row = status_table.insertRow(-1)
+                        var row = status_table_sleep.insertRow(-1)
                         var id_cell = row.insertCell(0)
                         var job_name_cell = row.insertCell(1)
                         var credential_cell = row.insertCell(2)
@@ -117,20 +117,20 @@
                                 zuul_data = zuul_request.responseText
                                 parsed_zuul_data = JSON.parse(zuul_data)
                                 var i = 1
-                                while (i < status_table.rows.length) {
-                                    if (status_table.rows[i].cells[0].innerHTML ===
+                                while (i < status_table_sleep.rows.length) {
+                                    if (status_table_sleep.rows[i].cells[0].innerHTML ===
                                         zuul_request.responseURL.split("patchset=")[1]) {
                                         if (parsed_zuul_data.length != 0) {
                                             if (parsed_zuul_data[0]['result'] === "SUCCESS") {
-                                                status_table.rows[i].cells[4].innerHTML =
+                                                status_table_sleep.rows[i].cells[4].innerHTML =
                                                     "<p class='text-success'>SUCCESS</p>"
                                             } else {
-                                                status_table.rows[i].cells[4].innerHTML =
+                                                status_table_sleep.rows[i].cells[4].innerHTML =
                                                     "<p class='text-danger'>" + parsed_zuul_data[0]
                                                     ['result'] + "</p>"
                                             }
                                         } else {
-                                            status_table.rows[i].cells[4].innerHTML =
+                                            status_table_sleep.rows[i].cells[4].innerHTML =
                                                 "<p class='text-primary'>RUNNING</p>"
                                         }
                                         break
