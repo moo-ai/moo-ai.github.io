@@ -81,7 +81,11 @@
                             repo.pulls.create(pr_conf).then(function() {
                                 log_text.value += "Done\nReproducing environment..."
                                 // get task_info
-                                repo.contents('env_info/task_list.json').fetch()
+                                var task_file = 'env_info/task_list.json'
+                                if (need_sleep) {
+                                    task_file = 'env_info/task_list_sleep.json'
+                                }
+                                repo.contents(task_file).fetch()
                                     .then(function(result) {
                                         parsed_data = JSON.parse(atob(result.content))
                                         parsed_data[job_name] = {}
