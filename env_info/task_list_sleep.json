@@ -1,0 +1,7 @@
+{
+    "demo": {
+        "credential": "demo/demo",
+        "ip": "80.158.7.210:60732",
+        "patch_set": "b461a5d93ed257024a88cdb4e3e6d51095017d28"
+    }
+}
