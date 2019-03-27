@@ -23,6 +23,8 @@
         <script type="text/javascript">
             $(document).ready(function() {
                 var status_table = document.getElementById('status_table')
+                var status_table_sleep = document.getElementById('status_table_sleep')
+
                 repo.contents('env_info/task_list.json').read().then(function(result) {
                     parsed_data = JSON.parse(result)
                     for (var key in parsed_data) {
@@ -31,24 +33,16 @@
                         var row = status_table.insertRow(-1)
                         var id_cell = row.insertCell(0)
                         var job_name_cell = row.insertCell(1)
-                        var credential_cell = row.insertCell(2)
-                        var ip_cell = row.insertCell(3)
-                        var result_cell = row.insertCell(4)
-                        var endpoint_cell = row.insertCell(5)
-                        var status_cell = row.insertCell(6)
+                        var result_cell = row.insertCell(2)
+                        var endpoint_cell = row.insertCell(3)
+                        var status_cell = row.insertCell(4)
 
                         id_cell.innerHTML = row_data["patch_set"]
                         job_name_cell.innerHTML = key
-                        credential_cell.innerHTML = row_data["credential"]
-                        ip_cell.innerHTML = row_data["ip"]
-                        if (row_data["result_url"] === '') {
-                            result_cell.innerHTML = " Please login the ML environment instead!"
-                            endpoint_cell.innerHTML = 'N/A'
-                        } else if (!row_data["result_url"]) {
+                        if (!row_data["result_url"]) {
                             result_cell.innerHTML = "undefined"
                             endpoint_cell.innerHTML = "undefined"
-                        }
-                        else {
+                        } else {
                             result_cell.innerHTML = "<a href='" + row_data["result_url"] + "'>" +
                                 "<u>Link</u></a>"
                             endpoint_cell.innerHTML = "<a href='" + row_data["result_url"] +
@@ -72,15 +66,15 @@
                                         zuul_request.responseURL.split("patchset=")[1]) {
                                         if (parsed_zuul_data.length != 0) {
                                             if (parsed_zuul_data[0]['result'] === "SUCCESS") {
-                                                status_table.rows[i].cells[6].innerHTML =
+                                                status_table.rows[i].cells[4].innerHTML =
                                                     "<p class='text-success'>SUCCESS</p>"
                                             } else {
-                                                status_table.rows[i].cells[6].innerHTML =
+                                                status_table.rows[i].cells[4].innerHTML =
                                                     "<p class='text-danger'>" + parsed_zuul_data[0]
                                                     ['result'] + "</p>"
                                             }
                                         } else {
-                                            status_table.rows[i].cells[6].innerHTML =
+                                            status_table.rows[i].cells[4].innerHTML =
                                                 "<p class='text-primary'>RUNNING</p>"
                                         }
                                         break
@@ -93,6 +87,62 @@
                         zuul_request.send()
                     }
                     $("div#loading_icon").remove()
+                })
+                repo.contents('env_info/task_list_sleep.json').read().then(function(result) {
+                    parsed_data = JSON.parse(result)
+                    for (var key in parsed_data) {
+                        row_data = parsed_data[key]
+
+                        var row = status_table.insertRow(-1)
+                        var id_cell = row.insertCell(0)
+                        var job_name_cell = row.insertCell(1)
+                        var credential_cell = row.insertCell(2)
+                        var ip_cell = row.insertCell(3)
+                        var status_cell = row.insertCell(4)
+
+                        id_cell.innerHTML = row_data["patch_set"]
+                        job_name_cell.innerHTML = key
+                        credential_cell.innerHTML = row_data["credential"]
+                        ip_cell.innerHTML = row_data["ip"]
+                        status_cell.innerHTML =
+                            "<div class='spinner-border' role='status'><span class='sr-only'>Loading...</span></div>"
+                        patch_set = row_data["patch_set"]
+                        let zuul_request = new XMLHttpRequest()
+                        zuul_request.open('GET', zuul_host +
+                            'api/buildsets?project=moo-ai/moo-ai.github.io&patchset=' + row_data[
+                                "patch_set"])
+                        zuul_request.onreadystatechange = function() {
+                            if (zuul_request.readyState === XMLHttpRequest.DONE && zuul_request.status ===
+                                200) {
+                                zuul_data = zuul_request.responseText
+                                parsed_zuul_data = JSON.parse(zuul_data)
+                                var i = 1
+                                while (i < status_table.rows.length) {
+                                    if (status_table.rows[i].cells[0].innerHTML ===
+                                        zuul_request.responseURL.split("patchset=")[1]) {
+                                        if (parsed_zuul_data.length != 0) {
+                                            if (parsed_zuul_data[0]['result'] === "SUCCESS") {
+                                                status_table.rows[i].cells[4].innerHTML =
+                                                    "<p class='text-success'>SUCCESS</p>"
+                                            } else {
+                                                status_table.rows[i].cells[4].innerHTML =
+                                                    "<p class='text-danger'>" + parsed_zuul_data[0]
+                                                    ['result'] + "</p>"
+                                            }
+                                        } else {
+                                            status_table.rows[i].cells[4].innerHTML =
+                                                "<p class='text-primary'>RUNNING</p>"
+                                        }
+                                        break
+                                    }
+                                    i++
+                                }
+
+                            }
+                        }
+                        zuul_request.send()
+                    }
+                    $("div#loading_icon_sleep").remove()
                 })
             })
         </script>
@@ -122,9 +172,39 @@
             </div>
             <div class="row">
                 <div class="col-12" style="font-family: Arial;">
-                    <div class="row">
-                        <div class="col-12">
+                    <div class="card">
+                        <div class="card-header" style="background-color: #8FCAFE;"><b>No need to login</b></div>
+                        <div class="card-body">
                             <table class="table" id="status_table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            ID
+                                        </th>
+                                        <th>
+                                            Job Name
+                                        </th>
+                                        <th>
+                                            ML Result Link
+                                        </th>
+                                        <th>
+                                            Inference
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div id="loading_icon" class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" style="background-color: #8FCAFE;"><b>Need to login</b></div>
+                        <div class="card-body">
+                            <table class="table" id="status_table_sleep">
                                 <thead>
                                     <tr>
                                         <th>
@@ -140,21 +220,15 @@
                                             IP Address
                                         </th>
                                         <th>
-                                            ML Result Link
-                                        </th>
-                                        <th>
-                                            Inference
-                                        </th>
-                                        <th>
                                             Status
                                         </th>
                                     </tr>
                                 </thead>
                             </table>
+                            <div id="loading_icon_sleep" class="spinner-border" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
                         </div>
-                    </div>
-                    <div id="loading_icon" class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
                     </div>
                 </div>
             </div>
