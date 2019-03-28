@@ -31,4 +31,5 @@ def analysis_yaml(yaml_file):
             metadata.write(output_folder + '\n')
 
 
-analysis_yaml('metadata.yaml')
+if __name__ == "__main__":
+    analysis_yaml('metadata.yaml')
