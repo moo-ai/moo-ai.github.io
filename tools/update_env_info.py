@@ -1,6 +1,8 @@
 import argparse
+import contextlib
 import github
 import json
+import time
 
 
 class EnvInfoUploader(object):
@@ -15,31 +17,65 @@ class EnvInfoUploader(object):
         self.keeping_env = keeping_env
         self.remote_env_file = ('task_list_sleep.json' if keeping_env
                                 else 'task_list.json')
-        self.content = self.repo.get_contents(
-            'env_info/%s' % self.remote_env_file, ref="master")
-        self.content_json = json.loads(self.content.decoded_content)
+
+    @contextlib.contextmanager
+    def _lock(self):
+        for i in range(10):
+            lock_content = self.repo.get_contents(
+                'env_info/lock.json', ref="master")
+            lock_json = json.loads(lock_content.decoded_content)
+
+            if lock_json[self.remote_env_file] == 0:
+                lock_json[self.remote_env_file] = 1
+                self.repo.update_file(lock_content.path,
+                                      "lock %s" % self.remote_env_file,
+                                      json.dumps(lock_json),
+                                      lock_content.sha,
+                                      branch="master")
+                break
+            else:
+                time.sleep(2)
+        else:
+            raise Exception
+
+        yield
+
+        lock_content = self.repo.get_contents(
+            'env_info/lock.json', ref="master")
+        lock_json = json.loads(lock_content.decoded_content)
+        lock_json[self.remote_env_file] = 0
+        self.repo.update_file(lock_content.path,
+                              "unlock %s" % self.remote_env_file,
+                              json.dumps(lock_json),
+                              lock_content.sha,
+                              branch="master")
 
     def _update_env_info(self):
-        self.content_json[self.job_name] = {
+        env_content = self.repo.get_contents(
+            'env_info/%s' % self.remote_env_file, ref="master")
+        env_content_json = json.loads(env_content.decoded_content)
+        env_content_json[self.job_name] = {
             "patch_set": self.patch_set,
         }
         if self.keeping_env:
-            self.content_json[self.job_name]["ip"] = self.public_ip
-            self.content_json[self.job_name]["credential"] = "demo/demo"
+            env_content_json[self.job_name]["ip"] = self.public_ip
+            env_content_json[self.job_name]["credential"] = "demo/demo"
         else:
-            self.content_json[self.job_name]["result_url"] = self.result_url
+            env_content_json[self.job_name]["result_url"] = self.result_url
+        return env_content, env_content_json
 
-    def _refresh_env_info(self):
+    def _refresh_env_info(self, env_content, env_content_json):
 
-        self.repo.update_file(self.content.path,
+        self.repo.update_file(env_content.path,
                               "upload %s ci job" % args.job,
-                              json.dumps(self.content_json), self.content.sha,
+                              json.dumps(env_content_json), env_content.sha,
                               branch="master")
         print("Success update %s" % self.remote_env_file)
 
     def upload_env_info(self):
-        self._update_env_info()
-        self._refresh_env_info()
+        with self._lock():
+            env_content, env_content_json = self._update_env_info()
+            self._refresh_env_info(env_content, env_content_json)
 
 
 if __name__ == "__main__":
