@@ -31,6 +31,7 @@ def refresh_env_info(keeping=False):
         env_file_name = 'env_info/task_list_sleep.json'
     try:
         contents = repo.get_contents(env_file_name, ref="master")
+        print("Success update %s" % env_file_name)
     except github.UnknownObjectException:
         exit(1)
 
@@ -56,10 +57,14 @@ if __name__ == "__main__":
     parser.add_argument('--url', metavar='<url>', required=True,
                         help="Result Url")
     parser.add_argument('--keeping', metavar='<keeping>', required=True,
-                        type=bool,
                         help="Keep the environment or not")
     args = parser.parse_args()
 
+    if args.keeping == 'true':
+        keep_env = True
+    else:
+        keep_env = False
+
     update_env_info(args.job, args.patch, args.ip, args.url,
-                    keeping=args.keeping)
-    refresh_env_info(keeping=args.keeping)
+                    keeping=keep_env)
+    refresh_env_info(keeping=keep_env)
