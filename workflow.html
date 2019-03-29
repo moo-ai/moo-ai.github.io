@@ -95,9 +95,9 @@
                                             content: btoa(parsed_data),
                                             sha: result.sha,
                                             branch: "master",
-                                            path: "env_info/task_list.json"
+                                            path: task_file
                                         }
-                                        repo.contents("env_info/task_list.json").add(
+                                        repo.contents(task_file).add(
                                             task_config).then(function() {
                                             log_text.value +=
                                                 "Started\nThe Job name is "
