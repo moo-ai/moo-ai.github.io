@@ -43,12 +43,12 @@ def refresh_env_info(keeping=False):
         env_file_name = 'env_info/task_list_sleep.json'
     try:
         contents = repo.get_contents(env_file_name, ref="master")
-        print("Success update %s" % env_file_name)
     except github.UnknownObjectException:
         exit(1)
 
-    repo.update_file(contents.path, "upload $job_name ci job", cont,
+    repo.update_file(contents.path, "upload %s ci job" % args.job, cont,
                      contents.sha, branch="master")
+    print("Success update %s" % env_file_name)
 
 
 if __name__ == "__main__":
