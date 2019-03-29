@@ -1,10 +1,22 @@
 import argparse
 import github
 import json
+import wget
+
+DOWNLOAD_FILE = 'env.json'
+
+
+def download_env_file(keeping=False):
+    file = 'task_list.json'
+    if keeping:
+        file = 'task_list_sleep.json'
+    url = ("https://raw.githubusercontent.com/moo-ai/moo-ai.github.io/"
+           "master/env_info/%s" % file)
+    wget.download(url, DOWNLOAD_FILE)
 
 
 def update_env_info(job_name, patch_set, ip, result_url, keeping=False):
-    with open('env.json', 'r') as json_file:
+    with open(DOWNLOAD_FILE, 'r') as json_file:
         exist_data = json.load(json_file)
 
     exist_data[job_name] = {
@@ -16,12 +28,12 @@ def update_env_info(job_name, patch_set, ip, result_url, keeping=False):
     else:
         exist_data[job_name]["result_url"] = result_url
 
-    with open('env.json', 'w') as file:
+    with open(DOWNLOAD_FILE, 'w') as file:
         json.dump(exist_data, file)
 
 
 def refresh_env_info(keeping=False):
-    with open('env.json', 'r') as env_file:
+    with open(DOWNLOAD_FILE, 'r') as env_file:
         cont = env_file.read()
     github_obj = github.Github(args.user,
                                args.password)
@@ -65,6 +77,7 @@ if __name__ == "__main__":
     else:
         keep_env = False
 
+    download_env_file(keep_env)
     update_env_info(args.job, args.patch, args.ip, args.url,
                     keeping=keep_env)
     refresh_env_info(keeping=keep_env)
