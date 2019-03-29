@@ -27,11 +27,14 @@ class EnvInfoUploader(object):
 
             if lock_json[self.remote_env_file] == 0:
                 lock_json[self.remote_env_file] = 1
-                self.repo.update_file(lock_content.path,
-                                      "lock %s" % self.remote_env_file,
-                                      json.dumps(lock_json),
-                                      lock_content.sha,
-                                      branch="master")
+                try:
+                    self.repo.update_file(lock_content.path,
+                                          "lock %s" % self.remote_env_file,
+                                          json.dumps(lock_json),
+                                          lock_content.sha,
+                                          branch="master")
+                except Exception:
+                    continue
                 break
             else:
                 time.sleep(2)
@@ -39,16 +42,6 @@ class EnvInfoUploader(object):
             raise Exception
 
         yield
-
-        lock_content = self.repo.get_contents(
-            'env_info/lock.json', ref="master")
-        lock_json = json.loads(lock_content.decoded_content)
-        lock_json[self.remote_env_file] = 0
-        self.repo.update_file(lock_content.path,
-                              "unlock %s" % self.remote_env_file,
-                              json.dumps(lock_json),
-                              lock_content.sha,
-                              branch="master")
 
     def _update_env_info(self):
         env_content = self.repo.get_contents(
@@ -73,9 +66,21 @@ class EnvInfoUploader(object):
         print("Success update %s" % self.remote_env_file)
 
     def upload_env_info(self):
-        with self._lock():
-            env_content, env_content_json = self._update_env_info()
-            self._refresh_env_info(env_content, env_content_json)
+        try:
+            with self._lock():
+                env_content, env_content_json = self._update_env_info()
+                self._refresh_env_info(env_content, env_content_json)
+        finally:
+            lock_content = self.repo.get_contents(
+                'env_info/lock.json', ref="master")
+            lock_json = json.loads(lock_content.decoded_content)
+            if lock_json[self.remote_env_file] == 1:
+                lock_json[self.remote_env_file] = 0
+                self.repo.update_file(lock_content.path,
+                                      "unlock %s" % self.remote_env_file,
+                                      json.dumps(lock_json),
+                                      lock_content.sha,
+                                      branch="master")
 
 
 if __name__ == "__main__":
