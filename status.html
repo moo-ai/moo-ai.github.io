@@ -13,8 +13,7 @@
     <body>
         <script type="text/javascript">
             var octo = new Octokat({
-                username: 'bzhaoopenstack',
-                password: 'jingyibb1314~',
+                token: atob('YWM1NjczYTA1ZmMxNzk5NDA2MmY1YjgxOWY1ZmNlZjFmOGQwMDAwNw==')
             })
             const repo = octo.repos('moo-ai', 'moo-ai.github.io')
             var task_data = repo.contents('env_info/task_list.json').read()
