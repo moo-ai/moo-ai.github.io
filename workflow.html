@@ -113,16 +113,16 @@
                                                 "\nThere may hit the ERROR during processing." +
                                                 "\nPlease Re-Fresh the page and Re-Click Submit Button."
                                             log_text.value += err_msg
-										    $.alert({
+					    $.alert({
                                                 title: 'Alert',
                                                 content: err_msg,
                                                 buttons: {
-                                                        ReFresh: function () {
-                                                                location.reload()
-                                                        },
+                                                    ReFresh: function () {
+                                                               location.reload()
+                                                             },
                                                 },
-										    })
-										})
+					     })
+					 })
                                     })
 
                             })
