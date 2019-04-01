@@ -9,6 +9,8 @@
         <script src="js/jquery-3.3.1.min.js"></script>
         <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/octokat.js"></script>
+        <link href="css/jquery-confirm.min.css" rel='stylesheet'>
+        <script src="js/jquery-confirm.min.js"></script>
     </head>
     <body>
         <script type="text/javascript">
@@ -95,8 +97,8 @@
                                             branch: "master",
                                             path: task_file
                                         }
-                                        repo.contents(task_file).add(
-                                            task_config).then(function() {
+                                        repo.contents(task_file).add(task_config)
+                                        .then(function() {
                                             log_text.value +=
                                                 "Started\nThe Job name is "
                                             log_text.value += job_name
@@ -106,6 +108,21 @@
                                                 'jump_to_result').removeAttribute(
                                                 'disabled')
                                         })
+                                        .catch(function(e) {
+                                            var err_msg =
+                                                "\nThere may hit the ERROR during processing." +
+                                                "\nPlease Re-Fresh the page and Re-Click Submit Button."
+                                            log_text.value += err_msg
+										    $.alert({
+                                                title: 'Alert',
+                                                content: err_msg,
+                                                buttons: {
+                                                        ReFresh: function () {
+                                                                location.reload()
+                                                        },
+                                                },
+										    })
+										})
                                     })
 
                             })
