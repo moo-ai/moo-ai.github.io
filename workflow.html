@@ -13,7 +13,7 @@
     <body>
         <script type="text/javascript">
             var octo = new Octokat({
-                token: 'a278b5c347791fe9914330b7d102ec6045e0c36e',
+                token: '9d186650c7e82492f87c207d2e7722ca251dfa39',
             })
             const repo = octo.repos('moo-ai', 'moo-ai.github.io')
             var file_name
@@ -44,7 +44,7 @@
                     file_name += '.zip'
                 }
                 document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-                var new_branch_name = "ai-test-" + Math.random().toString(36).substring(7)
+                var new_branch_name = job_name
                 // fetch the repo
                 log_text.value += "Initializing..."
                 repo.commits.fetch().then(function({
