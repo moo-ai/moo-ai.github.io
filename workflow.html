@@ -13,7 +13,7 @@
     <body>
         <script type="text/javascript">
             var octo = new Octokat({
-                auth: '9d186650c7e82492f87c207d2e7722ca251dfa39',
+                token: 'acd16afdd58272dad4488caedac6471d77029564',
             })
             const repo = octo.repos('moo-ai', 'moo-ai.github.io')
             var file_name
@@ -44,7 +44,6 @@
                     file_name += '.zip'
                 }
                 document.getElementById('submit_button').setAttribute('disabled', 'disabled')
-                var new_branch_name = job_name
                 // fetch the repo
                 log_text.value += "Initializing..."
                 repo.commits.fetch().then(function({
@@ -53,7 +52,7 @@
                     lastcommit = items[items.length - 1]
                     // create branch
                     repo.git.refs.create({
-                        ref: 'refs/heads/' + new_branch_name,
+                        ref: 'refs/heads/' + job_name,
                         sha: lastcommit.sha
                     }).then(function() {
                         log_text.value += "Done\nUploading..."
@@ -65,16 +64,16 @@
                         let config = {
                             message: 'test-for-ai-commit-for-create-new-file',
                             content: content,
-                            branch: new_branch_name,
+                            branch: job_name,
                             path: file_path
                         }
                         // upload file
                         repo.contents(file_path).add(config).then(function() {
                             let pr_conf = {
-                                title: new_branch_name + " AI CI Job",
+                                title: job_name + " AI CI Job",
                                 body: "Reproduce ML environment via OpenLab",
                                 base: "master",
-                                head: "moo-ai:" + new_branch_name
+                                head: "moo-ai:" + job_name
                             }
                             // create pull request
                             repo.pulls.create(pr_conf).then(function() {
