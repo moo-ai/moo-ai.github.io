@@ -27,9 +27,9 @@ Here is an example:
 
 ```
 framework:
-  - name: tensorflow
-  - version: 1.0.0
-  - runtime: python2.7
+  name: tensorflow
+  version: 1.0.0
+  runtime: python2.7
 entry_point: training_test.py
 output_folder: training_result
 ```
