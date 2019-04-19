@@ -45,7 +45,7 @@
                     // just read the red channel.
                     input_array[j] = input_image_data.data[j * 4] / 255;
                 }
-                input_tensor = tf.tensor3d(input_array, [1, 28,28])
+                input_tensor = tf.tensor4d(input_array, [1, 28,28, 1])
                 predict_result = trained_model.predict(input_tensor)
                 console.log(Array.from(predict_result.argMax(1).dataSync()))
                 predict_number = Array.from(predict_result.argMax(1).dataSync())[0]
