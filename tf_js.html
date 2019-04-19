@@ -56,7 +56,7 @@
         <script type="text/javascript">
             var trained_model
             var input_image
-            tf.loadLayersModel('replace.me').then(function(model) {
+            tf.loadLayersModel('./model.json').then(function(model) {
                 trained_model = model
                 upload_file_button = document.getElementById("upload_button")
                 upload_file_button.removeAttribute("disabled")
