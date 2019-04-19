@@ -47,10 +47,10 @@
                 }
                 // TODO(wxy): Move to openlab-zuul-job to support jinjia format.
                 var model_name = "{{ user_meta.model.name }}"
-                if(model_name == 'MNIST') {
+                if(model_name == "MNIST") {
                     input_tensor = tf.tensor3d(input_array, [1, 28,28])
                 }
-                if(model_name == 'EMNIST') {
+                if(model_name == "EMNIST") {
                     input_tensor = tf.tensor4d(input_array, [1, 28,28, 1])
                 }
                 predict_result = trained_model.predict(input_tensor)
@@ -70,10 +70,10 @@
             'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
             'v', 'w', 'x', 'y', 'z']
             var model_name = "{{ user_meta.model.name }}"
-            if(model_name == 'MNIST') {
+            if(model_name == "MNIST") {
                 model_url = 'replace.me'
             }
-            if(model_name == 'EMNIST') {
+            if(model_name == "EMNIST") {
                 model_url = './media/trained_model/emnist/model.json'
             }
             tf.loadLayersModel(model_url).then(function(model) {
