@@ -63,16 +63,18 @@
         <script type="text/javascript">
             var trained_model
             var input_image
+            var model_url
             var output_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
             'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
             'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
             'v', 'w', 'x', 'y', 'z']
-            {% if {{ user_meta.model.name }} == 'MNIST' %}
-            var model_url = 'replace.me'
-            {% endif %}
-            {% if {{ user_meta.model.name }} == 'EMNIST' %}
-            var model_url = './media/trained_model/emnist/model.json'
-            {% endif %}
+            var model_name = "{{ user_meta.model.name }}"
+            if(model_name == 'MNIST') {
+                model_url = 'replace.me'
+            }
+            if(model_name == 'EMNIST') {
+                model_url = './media/trained_model/emnist/model.json'
+            }
             tf.loadLayersModel(model_url).then(function(model) {
                 trained_model = model
                 upload_file_button = document.getElementById("upload_button")
