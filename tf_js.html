@@ -45,17 +45,17 @@
                     // just read the red channel.
                     input_array[j] = input_image_data.data[j * 4] / 255;
                 }
-				// TODO(wxy): Move to openlab-zuul-job to support jinjia format.
-				{% if {{ user_meta.model.name }} == 'MNIST' %}
-				input_tensor = tf.tensor3d(input_array, [1, 28,28])
-				{% endif %}
-				{% if {{ user_meta.model.name }} == 'EMNIST' %}
+                // TODO(wxy): Move to openlab-zuul-job to support jinjia format.
+                {% if {{ user_meta.model.name }} == 'MNIST' %}
+                input_tensor = tf.tensor3d(input_array, [1, 28,28])
+                {% endif %}
+                {% if {{ user_meta.model.name }} == 'EMNIST' %}
                 input_tensor = tf.tensor4d(input_array, [1, 28,28, 1])
-				{% endif %}
+                {% endif %}
                 predict_result = trained_model.predict(input_tensor)
                 console.log(Array.from(predict_result.argMax(1).dataSync()))
                 predict_number = Array.from(predict_result.argMax(1).dataSync())[0]
-				predict_result = output_list[predict_number]
+                predict_result = output_list[predict_number]
                 predict_output_text = document.getElementById("predict_output_text")
                 predict_output_text.innerText = predict_result
             }
@@ -63,16 +63,16 @@
         <script type="text/javascript">
             var trained_model
             var input_image
-			var output_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
-			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
-			'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-			'v', 'w', 'x', 'y', 'z']
-			{% if {{ user_meta.model.name }} == 'MNIST' %}
-			var model_url = 'replace.me'
-			{% endif %}
-			{% if {{ user_meta.model.name }} == 'EMNIST' %}
-			var model_url = './media/trained_model/emnist/model.json'
-			{% endif %}
+            var output_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+            'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
+            'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+            'v', 'w', 'x', 'y', 'z']
+            {% if {{ user_meta.model.name }} == 'MNIST' %}
+            var model_url = 'replace.me'
+            {% endif %}
+            {% if {{ user_meta.model.name }} == 'EMNIST' %}
+            var model_url = './media/trained_model/emnist/model.json'
+            {% endif %}
             tf.loadLayersModel(model_url).then(function(model) {
                 trained_model = model
                 upload_file_button = document.getElementById("upload_button")
@@ -85,9 +85,9 @@
                     <div class="card">
                         <div class="card-header" style="background-color: #8FCAFE;"><b>Dataset</b></div>
                         <div class="card-body">
-							<a href="./media/dataset/MNIST_Dataset_JPG_format.zip"><u>MNIST Dataset Download</u></a>
-							<br>
-							<a href="./media/dataset/EMNIST_picture.zip"><u>EMNIST Dataset Download</u></a>
+                            <a href="./media/dataset/MNIST_Dataset_JPG_format.zip"><u>MNIST Dataset Download</u></a>
+                            <br>
+                            <a href="./media/dataset/EMNIST_picture.zip"><u>EMNIST Dataset Download</u></a>
                         </div>
                     </div>
                     <div class="card">
