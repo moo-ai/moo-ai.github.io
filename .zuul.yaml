@@ -1,0 +1,10 @@
+- project:
+    name: moo-ai/moo-ai.github.io
+    check:
+      jobs:
+        - ai-on-openlab-test-vm:
+            files:
+              - ^user_data/.*
+        - ai-on-openlab-test-vm-with-gpu:
+            files:
+              - ^user_data_gpu/.*
