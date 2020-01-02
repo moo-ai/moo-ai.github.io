@@ -1,1 +1,6 @@
-{"demo": {"patch_set": "b461a5d93ed257024a88cdb4e3e6d51095017d28", "result_url": "http://80.158.7.210/logs/28/228/b461a5d93ed257024a88cdb4e3e6d51095017d28/check/ai-on-openlab-test-vm/ce14a7f/test_results/"}, "moo-job-f4nb9": {"patch_set": "9eea22cfdadbf53bb27291305dace3be930c852f", "result_url": "https://logs.openlabtesting.org/logs/59/1059/9eea22cfdadbf53bb27291305dace3be930c852f/check/ai-on-openlab-test-vm/ceb28a3/test_results/"}, "moo-job-gzlmdr": {"patch_set": "eb155675ee8d3f29d9a4a628e289f409f0027bfb", "result_url": "https://logs.openlabtesting.org/logs/60/1060/eb155675ee8d3f29d9a4a628e289f409f0027bfb/check/ai-on-openlab-test-vm/689281a/test_results/"}}
+{
+  "demo": {
+    "patch_set": "b461a5d93ed257024a88cdb4e3e6d51095017d28",
+    "result_url": "http://80.158.7.210/logs/28/228/b461a5d93ed257024a88cdb4e3e6d51095017d28/check/ai-on-openlab-test-vm/ce14a7f/test_results/"
+  }
+}
