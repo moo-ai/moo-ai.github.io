@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>MOO-Inference</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+        <script async src="https://docs.opencv.org/master/opencv.js" onload="onOpenCvReady()" type="text/javascript"></script>
+
+    </head>
+    <body>
+        <script type="text/javascript">
+            function onOpenCvReady() {
+                console.log("OpenCv Ready")
+            }
+            function upload_image(files) {
+                var file = files[0];
+                if (file) {
+                    fileFormat = file['name'].substring(file['name'].lastIndexOf(".")).toLowerCase()
+                    if( !fileFormat.match(/.png|.jpg|.jpeg/) ) {
+                        alert('Wrong format, must be one of：png/jpg/jpeg')
+                        return
+                    }
+                    var reader = new FileReader();
+                    reader.onload = function(event) {
+                        input_image = document.getElementById("input_img")
+                        input_image.src = event.target.result
+                    }
+                    reader.readAsDataURL(file);
+                    predict_button = document.getElementById("predict_button")
+                    predict_button.removeAttribute("disabled")
+                }
+            }
+
+            function predict_number_fn() {
+                var canvas = document.createElement('canvas')
+                canvas.width = input_image.width
+                canvas.height = input_image.height
+                canvas.getContext('2d').drawImage(input_image, 0, 0, input_image.width, input_image.height)
+                let img = cv.imread(canvas, 0)
+                let gray_img = new cv.Mat()
+                let resized_img = new cv.Mat()
+                let dsize = new cv.Size(28, 28)
+                cv.cvtColor(img, gray_img, cv.COLOR_RGBA2GRAY)
+                for (let j = 0; j < gray_img.data.length; j++) {
+                    gray_img.data[j] = 255-gray_img.data[j];
+                }
+                cv.resize(gray_img, resized_img, dsize);
+				mycav = document.getElementById("myCanvas")
+				cv.imshow(mycav, resized_img)
+                input_array = new Float32Array(28*28)
+                for (let j = 0; j < resized_img.data.length; j++) {
+
+                    input_array[j] = resized_img.data[j];
+                }
+                input_tensor = tf.tensor4d(input_array, [1, 28,28, 1])
+                predict_result = trained_model.predict(input_tensor)
+                predict_number = Array.from(predict_result.argMax(1).dataSync())[0]
+                predict_result = output_list[predict_number]
+                predict_output_text = document.getElementById("predict_output_text")
+                predict_output_text.innerText = predict_result
+            }
+        </script>
+        <script type="text/javascript">
+            var trained_model
+            var input_image
+            var model_url
+            var output_list =  ['candle', 'door', 'lightning', 'moon', 'mountain', 'shoes', 'sword', 't-shirt', 'telephone', 'train']
+            model_url = 'replace.me'
+            tf.loadLayersModel(model_url).then(function(model) {
+                trained_model = model
+                upload_file_button = document.getElementById("upload_button")
+                upload_file_button.removeAttribute("disabled")
+            })
+        </script>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12" style="font-family: Arial;">
+                    <div class="card">
+                        <div class="card-header" style="background-color: #8FCAFE;"><b>Upload a picture for predict</b></div>
+                        <div class="card-body">
+                            <input type="file" id="upload_button" class='form-control-file' onchange="upload_image(this.files)" disabled="disabled" />
+                            <img id="input_img" class="img-thumbnail" />
+                            <hr class="my-4">
+                            <button id="predict_button" class="btn-primary" onclick="predict_number_fn()" disabled="disabled">Predict</button>
+							<canvas id="myCanvas" width="200" height="100"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" style="background-color: #8FCAFE;"><b>Result</b></div>
+                        <div class="card-body">
+                            <p id="predict_output_text" class="text-success" style="font-size: 20px;"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
