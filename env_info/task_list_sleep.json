@@ -1,7 +1,7 @@
 {
-	"demo": {
-		"ip": "fake-ip",
-		"patch_set": "f891183ba921b58463301381892de9b52fad0a4f",
-		"credential": "demo/demo"
-	}
+    "demo": {
+        "ip": "fake-ip",
+        "patch_set": "f891183ba921b58463301381892de9b52fad0a4f",
+        "credential": "demo/demo"
+    }
 }
