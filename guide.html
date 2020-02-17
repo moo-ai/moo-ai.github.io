@@ -76,22 +76,21 @@
                         <p>These should be defined declaratively, using vendor neutral tech, to simplify reuse
                             regardless of the choice of environment.</p>
                         <p>So MOO will try to define the model metadata to describe the environment of trained model,
-                            such as using tensorflow, version 1.12.0, python runtime and some necessary model
+                            such as using tensorflow, version 1.12.0 or 2.0.0, python runtime, python packages and some necessary model
                             description. MOO will use the necessary model information to reproduce the training or
                             inference environment, this includes:</p>
                         <ul>
                             <li>Installing all necessary services in the target host. (Currently, this project only
                                 support Tensorflow framework and Python runtime) </li>
-                            <li>Provide several ways to touch the environment to do training or inference in the
+                            <li>Provide several ways(indluding dev mode) to touch the environment to do training or inference in the
                                 environment.</li>
-                            <li>Get the training or inference results and see how about your model is good enough.</li>
+                            <li>Get the training or inference results and check the performance of your model.</li>
 
                         </ul>
                         <p>The above is enabled via your pass to MOO.</p>
-                        <p>MOO provides CPU or GPU machine learning environment, you can choose which environment can
-                            fit your model. Then MOO will provide a environment to train and get training result to
-                            you, also if you want to access the environment to continue develop the model or provide
-                            some other new train data to go forward the train process, MOO will provide the related
+                        <p>MOO provides CPU machine learning environment. Then MOO will provide a environment to train and get training result to
+                            you, also if you want to access the environment to continue developing the model or providing
+                            some other new training data to push forward the train process, MOO will provide the related
                             information to you.</p>
                         <h2 id="item-1-2">1.2 Openlab</h2>
                         <p>OpenLab is a community program to test and improve support for the cloud-related SDKs/Tools
@@ -140,8 +139,8 @@
                                 </ul>
                             </li>
                             <li>
-                                <p>CPU or GPU</p>
-                                <p>The backend hardware totally based on your python script</p>
+                                <p>CPU</p>
+                                <p>Right now CPU backend is supported</p>
                             </li>
 
                         </ol>
@@ -152,10 +151,10 @@
                         <p>b. Choose a way to upload your Model ZIP file:</p>
                         <p><img src='https://moo-ai.github.io/media/2.PNG' alt='' referrerPolicy='no-referrer' /></p>
                         <p><img src='https://moo-ai.github.io/media/3.PNG' alt='' referrerPolicy='no-referrer' /></p>
-                        <p>c. Choose CPU or GPU: </p>
+                        <p>c. Choose CPU: </p>
                         <p>&nbsp;</p>
                         <p><img src='https://moo-ai.github.io/media/4.PNG' alt='' referrerPolicy='no-referrer' /></p>
-                        <p>d. Login the Environment or not:</p>
+                        <p>d. Login the Environment or not(If running SBIR job, this section must be ticked):</p>
                         <p><img src='https://moo-ai.github.io/media/5.PNG' alt='' referrerPolicy='no-referrer' /></p>
                         <p>e. Click Submit Button and Enjoy. You will see the Job process histroy here: </p>
                         <p><img src='https://moo-ai.github.io/media/6.PNG' alt='' referrerPolicy='no-referrer' /></p>
